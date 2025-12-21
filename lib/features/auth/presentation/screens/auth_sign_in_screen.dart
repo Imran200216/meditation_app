@@ -2,15 +2,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_filled_btn.dart';
 import 'package:meditation_app/commons/widgets/k_password_text_form_field.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
 import 'package:meditation_app/commons/widgets/k_text_form_field.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_sign_up_screen.dart';
 import 'package:meditation_app/features/auth/presentation/widgets/social_btn.dart';
-import 'package:meditation_app/features/welcome/presentation/screens/welcome_screen.dart';
 
 class AuthSignInScreen extends StatefulWidget {
   const AuthSignInScreen({super.key});
@@ -47,7 +47,7 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                 AppAssetsConstants.authBg,
                 fit: BoxFit.fitWidth,
               ),
-            ),
+            ).animate().fadeIn(delay: 40.ms).slideX(begin: -0.5, end: 0),
 
             // Controllers And Btn
             Positioned(
@@ -66,7 +66,7 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                     fontSize: 26,
                     fontWeight: FontWeight.w800,
                     color: AppColors.titleColor,
-                  ).animate().fadeIn(delay: 40.ms).slideX(begin: -0.5, end: 0),
+                  ),
 
                   const SizedBox(height: 40),
 
@@ -125,7 +125,7 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
 
                       Expanded(child: Divider(color: AppColors.subTitleColor)),
                     ],
-                  ),
+                  ).animate().fadeIn(delay: 80.ms).slideX(begin: -0.5, end: 0),
 
                   const SizedBox(height: 20),
 
@@ -139,7 +139,7 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                       Icons.alternate_email_outlined,
                       color: AppColors.subTitleColor,
                     ),
-                  ),
+                  ).animate().fadeIn(delay: 120.ms).slideX(begin: -0.5, end: 0),
 
                   const SizedBox(height: 24),
 
@@ -156,10 +156,10 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                       }
                       return null;
                     },
-                  ),
+                  ).animate().fadeIn(delay: 160.ms).slideX(begin: -0.5, end: 0),
                 ],
               ),
-            ),
+            ).animate().fadeIn(delay: 40.ms).slideY(begin: -0.5, end: 0),
 
             // Auth Footer
             Positioned(
@@ -170,28 +170,20 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                 children: [
                   // Sign In Btn
                   KFilledBtn(
-                        btnTitle: "Log In",
-                        btnBgColor: AppColors.primaryColor,
-                        btnTitleColor: AppColors.bgColor,
-                        onTap: () {
-                          // Auth Sign Up Screen
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return WelcomeScreen();
-                              },
-                            ),
-                          );
-                        },
-                        borderRadius: 30,
-                        fontSize: 16,
-                        btnHeight: 55,
-                        btnWidth: double.maxFinite,
-                      )
-                      .animate()
-                      .fadeIn(delay: 120.ms)
-                      .slideX(begin: -0.5, end: 0, curve: Curves.easeIn),
+                    btnTitle: "Log In",
+                    btnBgColor: AppColors.primaryColor,
+                    btnTitleColor: AppColors.bgColor,
+                    onTap: () {
+                      // Auth Sign Up Screen
+                      GoRouter.of(
+                        context,
+                      ).pushReplacementNamed(AppRouterConstants.welcome);
+                    },
+                    borderRadius: 30,
+                    fontSize: 16,
+                    btnHeight: 55,
+                    btnWidth: double.maxFinite,
+                  ),
 
                   // Forget Password ?
                   TextButton(
@@ -226,17 +218,13 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                         color: AppColors.authFooterContent,
                       ),
 
-                      // Log In Text Btn
+                      // Sign Up Text Btn
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
+                          // Auth Sign Up Screen
+                          GoRouter.of(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return AuthSignUpScreen();
-                              },
-                            ),
-                          );
+                          ).pushNamed(AppRouterConstants.authSignUp);
                         },
                         child: KText(
                           maxLines: 1,
@@ -253,7 +241,7 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                   ),
                 ],
               ),
-            ),
+            ).animate().fadeIn(delay: 120.ms).slideX(begin: -0.5, end: 0),
           ],
         ),
       ),

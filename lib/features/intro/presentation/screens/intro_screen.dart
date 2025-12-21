@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_filled_btn.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_sign_in_screen.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_sign_up_screen.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -89,14 +89,9 @@ class _IntroScreenState extends State<IntroScreen> {
                         btnTitleColor: AppColors.bgColor,
                         onTap: () {
                           // Auth Sign Up Screen
-                          Navigator.pushReplacement(
+                          GoRouter.of(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return AuthSignUpScreen();
-                              },
-                            ),
-                          );
+                          ).pushReplacementNamed(AppRouterConstants.authSignUp);
                         },
                         borderRadius: 30,
                         fontSize: 16,
@@ -128,13 +123,9 @@ class _IntroScreenState extends State<IntroScreen> {
                           // Log In Text Btn
                           TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return AuthSignInScreen();
-                                  },
-                                ),
+                              // Auth Sign In Screen
+                              GoRouter.of(context).pushReplacementNamed(
+                                AppRouterConstants.authSignIn,
                               );
                             },
                             child: KText(

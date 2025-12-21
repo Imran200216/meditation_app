@@ -2,13 +2,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_filled_btn.dart';
 import 'package:meditation_app/commons/widgets/k_password_text_form_field.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
 import 'package:meditation_app/commons/widgets/k_text_form_field.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_sign_in_screen.dart';
 import 'package:meditation_app/features/auth/presentation/widgets/social_btn.dart';
 
 class AuthSignUpScreen extends StatefulWidget {
@@ -48,7 +49,7 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                 AppAssetsConstants.authBg,
                 fit: BoxFit.fitWidth,
               ),
-            ),
+            ).animate().fadeIn(delay: 40.ms).slideX(begin: -0.5, end: 0),
 
             // Controllers And Btn
             Positioned(
@@ -178,7 +179,7 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                   ),
                 ],
               ),
-            ),
+            ).animate().fadeIn(delay: 40.ms).slideY(begin: -0.5, end: 0),
 
             // Auth Footer
             Positioned(
@@ -193,15 +194,10 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                         btnBgColor: AppColors.primaryColor,
                         btnTitleColor: AppColors.bgColor,
                         onTap: () {
-                          // Auth Sign Up Screen
-                          Navigator.pushReplacement(
+                          // Recovery Screen
+                          GoRouter.of(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return AuthSignUpScreen();
-                              },
-                            ),
-                          );
+                          ).pushReplacementNamed(AppRouterConstants.recovery);
                         },
                         borderRadius: 30,
                         fontSize: 16,
@@ -233,14 +229,10 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                       // Log In Text Btn
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
+                          // Auth Sign In Screen
+                          GoRouter.of(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return AuthSignInScreen();
-                              },
-                            ),
-                          );
+                          ).pushNamed(AppRouterConstants.authSignIn);
                         },
                         child: KText(
                           maxLines: 1,
@@ -257,7 +249,7 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                   ),
                 ],
               ),
-            ),
+            ).animate().fadeIn(delay: 120.ms).slideX(begin: -0.5, end: 0),
           ],
         ),
       ),

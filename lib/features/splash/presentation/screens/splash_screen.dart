@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -9,6 +11,15 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    Future.delayed(Duration(seconds: 3), () {
+      // Intro Screen
+      GoRouter.of(context).pushReplacementNamed(AppRouterConstants.intro);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

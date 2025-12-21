@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_filled_btn.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -21,11 +23,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         children: [
           // Bg Color
           SvgPicture.asset(
-            AppAssetsConstants.welcome,
-            width: double.maxFinite,
-            height: double.maxFinite,
-            fit: BoxFit.cover,
-          ),
+                AppAssetsConstants.welcome,
+                width: double.maxFinite,
+                height: double.maxFinite,
+                fit: BoxFit.cover,
+              )
+              .animate()
+              .fadeIn(duration: 800.ms, curve: Curves.easeInOut)
+              .scale(
+                begin: const Offset(1.1, 1.1),
+                end: const Offset(1.0, 1.0),
+                duration: 1200.ms,
+                curve: Curves.easeOutCubic,
+              ),
 
           Positioned(
             top: 60,
@@ -97,7 +107,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   btnTitle: "Get Started",
                   btnBgColor: AppColors.bgColor,
                   btnTitleColor: AppColors.titleColor,
-                  onTap: () {},
+                  onTap: () {
+                    // Recovery Screen
+                    GoRouter.of(
+                      context,
+                    ).pushReplacementNamed(AppRouterConstants.recovery);
+                  },
                   borderRadius: 30,
                   fontSize: 16,
                   btnHeight: 55,
