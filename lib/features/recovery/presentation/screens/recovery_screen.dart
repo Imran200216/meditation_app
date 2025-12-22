@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -83,15 +84,23 @@ class RecoveryScreen extends StatelessWidget {
           children: [
             // Bg
             Positioned(
-              top: 60,
-              right: 0,
-              left: 0,
-              bottom: 0,
-              child: SvgPicture.asset(
-                AppAssetsConstants.recoveryBg,
-                fit: BoxFit.cover,
-              ),
-            ),
+                  top: 60,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                  child: SvgPicture.asset(
+                    AppAssetsConstants.recoveryBg,
+                    fit: BoxFit.cover,
+                  ),
+                )
+                .animate(delay: 600.ms)
+                .slideY(
+                  begin: -0.3,
+                  end: 0,
+                  duration: 900.ms,
+                  curve: Curves.easeOutCubic,
+                )
+                .fadeIn(duration: 900.ms),
 
             Positioned(
               top: 20,
@@ -106,66 +115,90 @@ class RecoveryScreen extends StatelessWidget {
                   children: [
                     // Title
                     KText(
-                      maxLines: 1,
-                      softWrap: true,
-                      text: "What Brings you",
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.visible,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.titleColor,
-                    ),
+                          maxLines: 1,
+                          softWrap: true,
+                          text: "What Brings you",
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.visible,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.titleColor,
+                        )
+                        .animate(delay: 300.ms)
+                        .slideY(
+                          begin: -0.4,
+                          end: 0,
+                          duration: 700.ms,
+                          curve: Curves.easeOut,
+                        )
+                        .fadeIn(duration: 700.ms),
 
                     // Subtitle
                     KText(
-                      maxLines: 1,
-                      softWrap: true,
-                      text: "to Silent Moon?",
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.visible,
-                      fontSize: 26,
-                      fontWeight: FontWeight.w300,
-                      color: AppColors.subTitleColor,
-                    ),
+                          maxLines: 1,
+                          softWrap: true,
+                          text: "to Silent Moon?",
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.visible,
+                          fontSize: 26,
+                          fontWeight: FontWeight.w300,
+                          color: AppColors.subTitleColor,
+                        )
+                        .animate(delay: 450.ms)
+                        .slideY(
+                          begin: -0.4,
+                          end: 0,
+                          duration: 700.ms,
+                          curve: Curves.easeOut,
+                        )
+                        .fadeIn(duration: 700.ms),
 
                     const SizedBox(height: 30),
 
                     // Options
                     BlocBuilder<RecoverySelectCubit, RecoverySelectState>(
-                      builder: (context, state) {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          itemCount: options.length,
-                          itemBuilder: (context, index) {
-                            final option = options[index];
-                            final isSelected = context
-                                .read<RecoverySelectCubit>()
-                                .isSelected(option);
-
-                            return RecoveryTile(
-                              title: option,
-                              value: isSelected,
-                              onChanged: (_) {
-                                context
+                          builder: (context, state) {
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemCount: options.length,
+                              itemBuilder: (context, index) {
+                                final option = options[index];
+                                final isSelected = context
                                     .read<RecoverySelectCubit>()
-                                    .toggleOption(option);
-                              },
-                              bgColor: isSelected
-                                  ? AppColors.primaryColor
-                                  : AppColors.bgColor,
+                                    .isSelected(option);
 
-                              borderColor: AppColors.subTitleColor,
-                              textColor: isSelected
-                                  ? AppColors.bgColor
-                                  : AppColors.titleColor,
-                              checkColor: AppColors.primaryColor,
-                              checkBoxBorderColor: AppColors.subTitleColor,
+                                return RecoveryTile(
+                                  title: option,
+                                  value: isSelected,
+                                  onChanged: (_) {
+                                    context
+                                        .read<RecoverySelectCubit>()
+                                        .toggleOption(option);
+                                  },
+                                  bgColor: isSelected
+                                      ? AppColors.primaryColor
+                                      : AppColors.bgColor,
+
+                                  borderColor: AppColors.subTitleColor,
+                                  textColor: isSelected
+                                      ? AppColors.bgColor
+                                      : AppColors.titleColor,
+                                  checkColor: AppColors.primaryColor,
+                                  checkBoxBorderColor: AppColors.subTitleColor,
+                                );
+                              },
                             );
                           },
-                        );
-                      },
-                    ),
+                        )
+                        .animate(delay: 650.ms)
+                        .slideX(
+                          begin: -0.3,
+                          end: 0,
+                          duration: 800.ms,
+                          curve: Curves.easeOutCubic,
+                        )
+                        .fadeIn(duration: 800.ms),
                   ],
                 ),
               ),

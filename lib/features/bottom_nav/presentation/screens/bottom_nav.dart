@@ -7,6 +7,7 @@ import 'package:meditation_app/features/bottom_nav/presentation/cubit/bottom_nav
 import 'package:meditation_app/features/home/presentation/screens/home_screen.dart';
 import 'package:meditation_app/features/meditation/presentation/screens/meditation_screen.dart';
 import 'package:meditation_app/features/profile/presentation/screens/profile_screen.dart';
+import 'package:meditation_app/features/yoga/presentation/screens/yoga_screen.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({super.key});
@@ -16,6 +17,7 @@ class BottomNav extends StatelessWidget {
     final List<Widget> screens = [
       const HomeScreen(),
       const MeditationScreen(),
+      const YogaScreen(),
       const ProfileScreen(),
     ];
 
@@ -96,6 +98,20 @@ class BottomNav extends StatelessWidget {
                         color: AppColors.primaryColor,
                       ),
                       label: "Meditation",
+                    ),
+
+                    NavigationDestination(
+                      icon: SvgPicture.asset(
+                        AppAssetsConstants.yoga,
+                        height: 24,
+                        color: AppColors.subTitleColor,
+                      ),
+                      selectedIcon: SvgPicture.asset(
+                        AppAssetsConstants.yoga,
+                        height: 24,
+                        color: AppColors.primaryColor,
+                      ),
+                      label: "Yoga",
                     ),
 
                     // Profile

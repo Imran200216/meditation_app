@@ -37,6 +37,15 @@ dependencies:
   # logger
   logger: ^2.6.2
 
+  # cached_network_image
+  cached_network_image: ^3.4.1
+
+  # skeletonizer
+  skeletonizer: ^2.1.2
+
+  # url launcher
+  url_launcher: ^6.3.2
+
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +59,7 @@ flutter:
 
   assets:
     - assets/svg/
+    - assets/png/
 
   fonts:
     - family: GoogleSans

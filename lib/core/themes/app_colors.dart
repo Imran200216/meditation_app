@@ -18,4 +18,6 @@ class AppColors {
   static const Color socialBtnBorderColor = Color(0xFFEBEAEC);
 
   static const Color errorTextFormFieldErrorBorderColor = Colors.red;
+
+  static const Color transparentColor = Colors.transparent;
 }

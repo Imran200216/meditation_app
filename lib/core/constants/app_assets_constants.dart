@@ -22,4 +22,20 @@ class AppAssetsConstants {
   static const String night = "assets/svg/night.svg";
 
   static const String dailyMeditate = "assets/svg/daily-meditate.svg";
+
+  static const String yoga = "assets/svg/yoga.svg";
+
+  static const String audio = "assets/svg/audio.svg";
+
+  static const String share = "assets/svg/share.svg";
+
+  static const String faq = "assets/svg/faq.svg";
+
+  static const String privacyPolicy = "assets/svg/privacy-policy.svg";
+
+  static const String support = "assets/svg/support.svg";
+
+  static const String logout = "assets/svg/logout.svg";
+
+  static const String personPlaceHolder = "assets/png/person-placeholder.png";
 }
