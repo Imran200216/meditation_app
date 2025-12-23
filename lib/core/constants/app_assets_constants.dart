@@ -37,5 +37,9 @@ class AppAssetsConstants {
 
   static const String logout = "assets/svg/logout.svg";
 
+  static const String about = "assets/svg/about.svg";
+
   static const String personPlaceHolder = "assets/png/person-placeholder.png";
+
+  static const String imgPlaceholder = "assets/jpg/img-placeholder.jpg";
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/features/profile/presentation/widgets/profile_avatar.dart';
 import 'package:meditation_app/features/profile/presentation/widgets/profile_list_tile.dart';
@@ -66,7 +68,26 @@ class ProfileScreen extends StatelessWidget {
                       leadingSvgPath: AppAssetsConstants.profile,
                       title: "Personal Info",
                       subtitle: "Update your profile and personal preferences",
-                      onTap: () {},
+                      onTap: () {
+                        // Personal Info Screen
+                        GoRouter.of(
+                          context,
+                        ).pushNamed(AppRouterConstants.personalInfo);
+                      },
+                    ),
+
+                    // About
+                    ProfileListTile(
+                      leadingSvgPath: AppAssetsConstants.about,
+                      title: "About Us",
+                      subtitle:
+                          "Explore our purpose, values, and the vision behind the app",
+                      onTap: () {
+                        // About Us Screen
+                        GoRouter.of(
+                          context,
+                        ).pushNamed(AppRouterConstants.aboutUs);
+                      },
                     ),
 
                     // Share App
@@ -82,7 +103,10 @@ class ProfileScreen extends StatelessWidget {
                       leadingSvgPath: AppAssetsConstants.faq,
                       title: "FAQ's",
                       subtitle: "Learn more about the app",
-                      onTap: () {},
+                      onTap: () {
+                        // FAQ's Screen
+                        GoRouter.of(context).pushNamed(AppRouterConstants.faq);
+                      },
                     ),
 
                     // Privacy Policy
@@ -106,7 +130,10 @@ class ProfileScreen extends StatelessWidget {
                       leadingSvgPath: AppAssetsConstants.logout,
                       title: "Logout",
                       subtitle: "See you again",
-                      onTap: () {},
+                      onTap: () {
+                        // Intro Screen
+                        GoRouter.of(context).goNamed(AppRouterConstants.intro);
+                      },
                     ),
                   ],
                 ),

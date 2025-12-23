@@ -20,4 +20,7 @@ class AppColors {
   static const Color errorTextFormFieldErrorBorderColor = Colors.red;
 
   static const Color transparentColor = Colors.transparent;
+
+  static const Color subTitleParaColor = Color(0xFF78787A);
+
 }

@@ -16,4 +16,10 @@ class AppRouterConstants {
   static const String languageSelect = "languageSelect";
 
   static const String bottomNav = "bottomNav";
+
+  static const String personalInfo = "personalInfo";
+
+  static const String faq = "faq";
+
+  static const String aboutUs = "aboutUs";
 }
