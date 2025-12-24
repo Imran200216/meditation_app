@@ -21,6 +21,11 @@ class _MeditationScreenState extends State<MeditationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Responsive
+    final size = MediaQuery.of(context).size;
+    final itemWidth = (size.width - 20 * 2 - 16) / 2;
+    final itemHeight = itemWidth / 0.76;
+
     return Scaffold(
       backgroundColor: AppColors.bgColor,
       body: SafeArea(
@@ -121,11 +126,11 @@ class _MeditationScreenState extends State<MeditationScreen> {
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 16,
                     mainAxisSpacing: 16,
-                    childAspectRatio: 0.76,
+                    childAspectRatio: itemWidth / itemHeight,
                   ),
                   itemCount: 20,
                   // number of items

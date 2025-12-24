@@ -3,8 +3,10 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
+import 'package:meditation_app/core/constants/app_content_constants.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
+import 'package:meditation_app/core/utils/url_launcher_utils.dart';
 import 'package:meditation_app/features/profile/presentation/widgets/profile_avatar.dart';
 import 'package:meditation_app/features/profile/presentation/widgets/profile_list_tile.dart';
 
@@ -20,6 +22,7 @@ class ProfileScreen extends StatelessWidget {
         title: "Personal Info",
         subtitle: "Update your profile and personal preferences",
         onTap: () {
+          // Personal Info Screen
           GoRouter.of(context).pushNamed(AppRouterConstants.personalInfo);
         },
       ),
@@ -28,6 +31,7 @@ class ProfileScreen extends StatelessWidget {
         title: "About Us",
         subtitle: "Explore our purpose, values, and the vision behind the app",
         onTap: () {
+          // About Us Screen
           GoRouter.of(context).pushNamed(AppRouterConstants.aboutUs);
         },
       ),
@@ -42,6 +46,7 @@ class ProfileScreen extends StatelessWidget {
         title: "FAQ's",
         subtitle: "Learn more about the app",
         onTap: () {
+          // FAQ Screen
           GoRouter.of(context).pushNamed(AppRouterConstants.faq);
         },
       ),
@@ -49,19 +54,26 @@ class ProfileScreen extends StatelessWidget {
         leadingSvgPath: AppAssetsConstants.privacyPolicy,
         title: "Privacy Policy",
         subtitle: "Know how we use and secure your data",
-        onTap: () {},
+        onTap: () {
+          // Privacy Policy
+          UrlLauncherUtils.launchUrlLink(AppContentConstants.privacyPolicy);
+        },
       ),
       ProfileListTile(
         leadingSvgPath: AppAssetsConstants.support,
         title: "Contact Support",
         subtitle: "Reach out for any support",
-        onTap: () {},
+        onTap: () {
+          // Privacy Policy
+          UrlLauncherUtils.launchUrlLink(AppContentConstants.contactSupport);
+        },
       ),
       ProfileListTile(
         leadingSvgPath: AppAssetsConstants.logout,
         title: "Logout",
         subtitle: "See you again",
         onTap: () {
+          // Into Screen
           GoRouter.of(context).goNamed(AppRouterConstants.intro);
         },
       ),

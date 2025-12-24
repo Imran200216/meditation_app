@@ -17,6 +17,9 @@ class HomeScreen extends StatelessWidget {
     // Screen Size
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final size = MediaQuery.of(context).size;
+    final itemWidth = (size.width - 20 * 2 - 16) / 2;
+    final itemHeight = itemWidth / 0.76;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -168,11 +171,11 @@ class HomeScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20),
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
-                childAspectRatio: 0.76,
+                childAspectRatio: itemWidth / itemHeight,
               ),
               itemCount: 20,
               // number of items

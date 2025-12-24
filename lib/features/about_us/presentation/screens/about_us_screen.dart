@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_appbar.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
+import 'package:meditation_app/core/constants/app_content_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
+import 'package:meditation_app/core/utils/url_launcher_utils.dart';
 import 'package:meditation_app/features/about_us/presentation/widgets/about_us_team_card.dart';
 
 class AboutUsScreen extends StatelessWidget {
@@ -89,7 +91,11 @@ Our goal is to make mindfulness simple, accessible, and meaningful—so you can 
               AboutUsTeamCard(
                 name: "Imran B",
                 designation: "Lead Front End Engineer",
-                onTap: () {},
+                onTap: () {
+                  UrlLauncherUtils.launchUrlLink(
+                    AppContentConstants.imranPortFolio,
+                  );
+                },
                 profileImage:
                     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
               ),
@@ -98,7 +104,11 @@ Our goal is to make mindfulness simple, accessible, and meaningful—so you can 
               AboutUsTeamCard(
                 name: "Manikandan K",
                 designation: "Lead Back End Engineer",
-                onTap: () {},
+                onTap: () {
+                  UrlLauncherUtils.launchUrlLink(
+                    AppContentConstants.maniKandanPortFolio,
+                  );
+                },
                 profileImage:
                     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
               ),
@@ -108,7 +118,11 @@ Our goal is to make mindfulness simple, accessible, and meaningful—so you can 
               AboutUsTeamCard(
                 name: "Anirudhane V",
                 designation: "Content Writer",
-                onTap: () {},
+                onTap: () {
+                  UrlLauncherUtils.launchUrlLink(
+                    AppContentConstants.anirudhaneVPotFolio,
+                  );
+                },
                 profileImage:
                     "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
               ),
