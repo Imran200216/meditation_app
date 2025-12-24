@@ -22,4 +22,6 @@ class AppRouterConstants {
   static const String faq = "faq";
 
   static const String aboutUs = "aboutUs";
+
+  static const String audio = "audio";
 }

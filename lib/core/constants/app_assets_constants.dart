@@ -42,4 +42,12 @@ class AppAssetsConstants {
   static const String personPlaceHolder = "assets/png/person-placeholder.png";
 
   static const String imgPlaceholder = "assets/jpg/img-placeholder.jpg";
+
+  static const String audioLeftVector = "assets/svg/audio-left-vector.svg";
+
+  static const String audioRightVector = "assets/svg/audio-right-vector.svg";
+
+  static const String audioTopVector = "assets/svg/audio-top-vector.svg";
+
+  static const String audioBottomVector = "assets/svg/audio-bottom-vector.svg";
 }

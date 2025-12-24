@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/features/about_us/presentation/screens/about_us_screen.dart';
+import 'package:meditation_app/features/audio/presentation/screens/audio_screen.dart';
 import 'package:meditation_app/features/auth/presentation/screens/auth_sign_in_screen.dart';
 import 'package:meditation_app/features/auth/presentation/screens/auth_sign_up_screen.dart';
 import 'package:meditation_app/features/bottom_nav/presentation/screens/bottom_nav.dart';
@@ -122,6 +123,15 @@ GoRouter appRouter = GoRouter(
       name: AppRouterConstants.aboutUs,
       builder: (context, state) {
         return AboutUsScreen();
+      },
+    ),
+
+    // Audio Screen
+    GoRoute(
+      path: '/audio',
+      name: AppRouterConstants.audio,
+      builder: (context, state) {
+        return AudioScreen();
       },
     ),
   ],
