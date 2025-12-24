@@ -23,4 +23,13 @@ class AppColors {
 
   static const Color subTitleParaColor = Color(0xFF78787A);
 
+  static const Color audioBgColor = Color(0xFFFAF7F2);
+
+  static const Color favoriteBgColor = Color(0xFFB6B8BF);
+
+  static const Color playPauseBgColor = Color(0xFFBABCC6);
+
+  static const Color playPauseIconBgColor = Color(0xFF3F414E);
+
+  static const Color playPauseIconColor = Color(0xFFFBFBFB);
 }

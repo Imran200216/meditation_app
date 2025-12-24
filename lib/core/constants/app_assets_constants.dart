@@ -50,4 +50,8 @@ class AppAssetsConstants {
   static const String audioTopVector = "assets/svg/audio-top-vector.svg";
 
   static const String audioBottomVector = "assets/svg/audio-bottom-vector.svg";
+
+  static const String afterAudio = "assets/svg/after-audio.svg";
+
+  static const String beforeAudio = "assets/svg/before-audio.svg";
 }

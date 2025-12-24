@@ -76,7 +76,7 @@ class _YogaScreenState extends State<YogaScreen> {
                     return const SizedBox(height: 12);
                   },
                   itemBuilder: (context, index) {
-                    return YogaCard()
+                    return YogaCard(onTap: () {})
                         .animate()
                         .fadeIn(duration: 500.ms, delay: (350 + index * 60).ms)
                         .slideY(

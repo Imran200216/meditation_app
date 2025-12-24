@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/features/meditation/presentation/widgets/meditate_audio_card.dart';
 
@@ -130,7 +132,12 @@ class _MeditationScreenState extends State<MeditationScreen> {
                   itemBuilder: (context, index) {
                     return MeditateAudioCard(
                           audioTitle: "Relaxation Music with Candle Love Move",
-                          onTap: () {},
+                          onTap: () {
+                            // Audio Screen
+                            GoRouter.of(
+                              context,
+                            ).pushNamed(AppRouterConstants.audio);
+                          },
                         )
                         .animate()
                         .fadeIn(duration: 500.ms, delay: (index * 80).ms)

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meditation_app/commons/widgets/k_text.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/features/meditation/presentation/widgets/meditate_audio_card.dart';
 
@@ -84,55 +87,72 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
 
-                          //
+                          // Daily Meditation
                           Positioned(
                             left: 20,
                             right: 20,
                             bottom: 20,
                             top: 20,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Title
-                                    KText(
-                                      maxLines: 2,
-                                      softWrap: true,
-                                      text: "Daily Meditation",
-                                      textAlign: TextAlign.start,
-                                      overflow: TextOverflow.visible,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.w800,
-                                      color: AppColors.bgColor,
-                                    ),
+                            child: GestureDetector(
+                              onTap: () {
+                                HapticFeedback.heavyImpact();
 
-                                    // Sub Title
-                                    KText(
-                                      maxLines: 2,
-                                      softWrap: true,
-                                      text: "Meditations 3-10 MINS",
-                                      textAlign: TextAlign.start,
-                                      overflow: TextOverflow.visible,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.bgColor,
-                                    ),
-                                  ],
-                                ),
+                                // Audio Screen
+                                GoRouter.of(
+                                  context,
+                                ).pushNamed(AppRouterConstants.audio);
+                              },
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      // Title
+                                      KText(
+                                        maxLines: 2,
+                                        softWrap: true,
+                                        text: "Daily Meditation",
+                                        textAlign: TextAlign.start,
+                                        overflow: TextOverflow.visible,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.w800,
+                                        color: AppColors.bgColor,
+                                      ),
 
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(
-                                    Icons.play_circle_fill_outlined,
-                                    color: AppColors.bgColor,
-                                    size: 42,
+                                      // Sub Title
+                                      KText(
+                                        maxLines: 2,
+                                        softWrap: true,
+                                        text: "Meditations 3-10 MINS",
+                                        textAlign: TextAlign.start,
+                                        overflow: TextOverflow.visible,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.bgColor,
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ],
+
+                                  IconButton(
+                                    onPressed: () {
+                                      // Audio Screen
+                                      GoRouter.of(
+                                        context,
+                                      ).pushNamed(AppRouterConstants.audio);
+                                    },
+                                    icon: Icon(
+                                      Icons.play_circle_fill_outlined,
+                                      color: AppColors.bgColor,
+                                      size: 42,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -159,7 +179,12 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 return MeditateAudioCard(
                       audioTitle: "Relaxation Music with Candle Love Move",
-                      onTap: () {},
+                      onTap: () {
+                        // Audio Screen
+                        GoRouter.of(
+                          context,
+                        ).pushNamed(AppRouterConstants.audio);
+                      },
                     )
                     .animate()
                     .fadeIn(duration: 500.ms, delay: (index * 80).ms)
