@@ -32,14 +32,22 @@ class _YogaScreenState extends State<YogaScreen> {
                       softWrap: true,
                       text: "Modern Wellness",
                       textAlign: TextAlign.center,
-                      overflow: TextOverflow.visible,
                       fontSize: 24,
                       fontWeight: FontWeight.w800,
                       color: AppColors.titleColor,
                     )
                     .animate()
-                    .fadeIn(delay: 40.ms, curve: Curves.easeIn)
-                    .slideY(begin: -0.5, end: 0),
+                    .fadeIn(
+                      duration: 700.ms,
+                      delay: 100.ms,
+                      curve: Curves.easeOutCubic,
+                    )
+                    .slideY(
+                      begin: -0.25,
+                      end: 0,
+                      duration: 700.ms,
+                      curve: Curves.easeOutCubic,
+                    ),
 
                 const SizedBox(height: 12),
 
@@ -50,14 +58,13 @@ class _YogaScreenState extends State<YogaScreen> {
                       text:
                           "Find stillness in motion and harmony in every breath",
                       textAlign: TextAlign.center,
-                      overflow: TextOverflow.visible,
                       fontSize: 17,
                       fontWeight: FontWeight.w400,
                       color: AppColors.subTitleColor,
                     )
                     .animate()
-                    .fadeIn(delay: 80.ms, curve: Curves.easeIn)
-                    .slideY(begin: -0.5, end: 0),
+                    .fadeIn(duration: 700.ms, delay: 250.ms)
+                    .slideY(begin: -0.25, end: 0, duration: 700.ms),
 
                 const SizedBox(height: 30),
 
@@ -69,7 +76,15 @@ class _YogaScreenState extends State<YogaScreen> {
                     return const SizedBox(height: 12);
                   },
                   itemBuilder: (context, index) {
-                    return YogaCard();
+                    return YogaCard()
+                        .animate()
+                        .fadeIn(duration: 500.ms, delay: (350 + index * 60).ms)
+                        .slideY(
+                          begin: 0.25,
+                          end: 0,
+                          duration: 500.ms,
+                          curve: Curves.easeOutCubic,
+                        );
                   },
                 ),
               ],

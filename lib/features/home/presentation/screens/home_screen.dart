@@ -44,97 +44,102 @@ class HomeScreen extends StatelessWidget {
                         maxLines: 2,
                         softWrap: true,
                         text: "Good Night, Imran B",
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.visible,
                         fontSize: 24,
                         fontWeight: FontWeight.w800,
                         color: AppColors.titleColor,
                       )
                       .animate()
-                      .fadeIn(delay: 40.ms, curve: Curves.easeIn)
-                      .slideX(begin: -0.5, end: 0),
+                      .fadeIn(
+                        duration: 600.ms,
+                        delay: 100.ms,
+                        curve: Curves.easeOut,
+                      )
+                      .slideY(
+                        begin: -0.3,
+                        end: 0,
+                        duration: 600.ms,
+                        curve: Curves.easeOut,
+                      ),
 
                   // Sub Title
                   KText(
-                        maxLines: 2,
-                        softWrap: true,
                         text: "We Wish you have a good day",
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.visible,
                         fontSize: 17,
-                        fontWeight: FontWeight.w400,
                         color: AppColors.subTitleColor,
                       )
                       .animate()
-                      .fadeIn(delay: 80.ms, curve: Curves.easeIn)
-                      .slideX(begin: -0.5, end: 0),
+                      .fadeIn(duration: 600.ms, delay: 250.ms)
+                      .slideY(begin: -0.3, end: 0, duration: 600.ms),
 
                   const SizedBox(height: 30),
 
                   Stack(
-                    children: [
-                      // Daily Meditate Svg
-                      SizedBox(
-                        height: 100,
-                        child: SvgPicture.asset(
-                          AppAssetsConstants.dailyMeditate,
-                          width: double.maxFinite,
-                        ),
-                      ),
+                        children: [
+                          // Daily Meditate Svg
+                          SizedBox(
+                            height: 100,
+                            child: SvgPicture.asset(
+                              AppAssetsConstants.dailyMeditate,
+                              width: double.maxFinite,
+                            ),
+                          ),
 
-                      //
-                      Positioned(
-                        left: 20,
-                        right: 20,
-                        bottom: 20,
-                        top: 20,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
+                          //
+                          Positioned(
+                            left: 20,
+                            right: 20,
+                            bottom: 20,
+                            top: 20,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                // Title
-                                KText(
-                                  maxLines: 2,
-                                  softWrap: true,
-                                  text: "Daily Meditation",
-                                  textAlign: TextAlign.start,
-                                  overflow: TextOverflow.visible,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w800,
-                                  color: AppColors.bgColor,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Title
+                                    KText(
+                                      maxLines: 2,
+                                      softWrap: true,
+                                      text: "Daily Meditation",
+                                      textAlign: TextAlign.start,
+                                      overflow: TextOverflow.visible,
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.bgColor,
+                                    ),
+
+                                    // Sub Title
+                                    KText(
+                                      maxLines: 2,
+                                      softWrap: true,
+                                      text: "Meditations 3-10 MINS",
+                                      textAlign: TextAlign.start,
+                                      overflow: TextOverflow.visible,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.bgColor,
+                                    ),
+                                  ],
                                 ),
 
-                                // Sub Title
-                                KText(
-                                  maxLines: 2,
-                                  softWrap: true,
-                                  text: "Meditations 3-10 MINS",
-                                  textAlign: TextAlign.start,
-                                  overflow: TextOverflow.visible,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.bgColor,
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.play_circle_fill_outlined,
+                                    color: AppColors.bgColor,
+                                    size: 42,
+                                  ),
                                 ),
                               ],
                             ),
-
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.play_circle_fill_outlined,
-                                color: AppColors.bgColor,
-                                size: 42,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                          ),
+                        ],
+                      )
+                      .animate()
+                      .fadeIn(duration: 700.ms, delay: 400.ms)
+                      .slideY(begin: 0.3, end: 0, duration: 700.ms),
                 ],
               ),
             ),
@@ -153,9 +158,12 @@ class HomeScreen extends StatelessWidget {
               // number of items
               itemBuilder: (context, index) {
                 return MeditateAudioCard(
-                  audioTitle: "Relaxation Music with Candle Love Move",
-                  onTap: () {},
-                );
+                      audioTitle: "Relaxation Music with Candle Love Move",
+                      onTap: () {},
+                    )
+                    .animate()
+                    .fadeIn(duration: 500.ms, delay: (index * 80).ms)
+                    .slideY(begin: 0.3, end: 0, duration: 500.ms);
               },
             ),
           ],

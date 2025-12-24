@@ -129,9 +129,12 @@ class _MeditationScreenState extends State<MeditationScreen> {
                   // number of items
                   itemBuilder: (context, index) {
                     return MeditateAudioCard(
-                      audioTitle: "Relaxation Music with Candle Love Move",
-                      onTap: () {},
-                    );
+                          audioTitle: "Relaxation Music with Candle Love Move",
+                          onTap: () {},
+                        )
+                        .animate()
+                        .fadeIn(duration: 500.ms, delay: (index * 80).ms)
+                        .slideY(begin: 0.3, end: 0, duration: 500.ms);
                   },
                 ),
 
