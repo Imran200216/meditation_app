@@ -84,10 +84,7 @@ class HomeScreen extends StatelessWidget {
           // ================= DAILY MEDITATION CARD =================
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 20,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Stack(
                 children: [
                   SizedBox(

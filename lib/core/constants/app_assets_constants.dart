@@ -58,4 +58,6 @@ class AppAssetsConstants {
   static const String morningLottie = "assets/lottie/morning.json";
 
   static const String nightLottie = "assets/lottie/night.json";
+
+  static const String meditateLottie = "assets/lottie/meditate.json";
 }
