@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:meditation_app/common/widgets/widgets.dart';
 import 'package:meditation_app/core/constants/constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/splash/presentation/widgets/splash_logo_quote_text.dart';
+import 'package:meditation_app/features/splash/splash.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class SplashScreen extends StatefulWidget {
