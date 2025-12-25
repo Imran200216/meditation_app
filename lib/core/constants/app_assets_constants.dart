@@ -54,4 +54,8 @@ class AppAssetsConstants {
   static const String afterAudio = "assets/svg/after-audio.svg";
 
   static const String beforeAudio = "assets/svg/before-audio.svg";
+
+  static const String morningLottie = "assets/lottie/morning.json";
+
+  static const String nightLottie = "assets/lottie/night.json";
 }
