@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:meditation_app/commons/widgets/k_text.dart';
+import 'package:meditation_app/common/widgets/k_text.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/features/profile/presentation/widgets/profile_avatar.dart';
 

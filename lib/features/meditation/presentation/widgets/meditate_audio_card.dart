@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:meditation_app/commons/widgets/k_text.dart';
+import 'package:meditation_app/common/widgets/k_text.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 

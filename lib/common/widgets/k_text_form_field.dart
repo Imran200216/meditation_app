@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:meditation_app/commons/widgets/k_text.dart';
+import 'package:meditation_app/common/widgets/k_text.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 
-class KPasswordTextFormField extends StatefulWidget {
+class KTextFormField extends StatelessWidget {
+  final bool readOnly;
+  final String? labelText;
   final TextEditingController controller;
   final String hintText;
-  final String? labelText;
   final String? Function(String?)? validator;
-  final Function(String)? onChanged;
-  final bool readOnly;
+  final bool obscureText;
+  final TextInputType keyboardType;
+  final Iterable<String>? autofillHints;
+  final int? maxLines;
 
-  const KPasswordTextFormField({
+  final int? maxLength; // 👈 NEW optional parameter
+
+  final Widget? suffixIcon;
+  final Function(String)? onChanged;
+
+  const KTextFormField({
     super.key,
     required this.controller,
     required this.hintText,
-    this.labelText,
     this.validator,
-    this.onChanged,
+    this.obscureText = false,
+    this.keyboardType = TextInputType.text,
+    this.autofillHints,
+    this.labelText,
+    this.maxLines,
     this.readOnly = false,
+    this.suffixIcon,
+    this.onChanged,
+    this.maxLength, // 👈 include in constructor
   });
-
-  @override
-  State<KPasswordTextFormField> createState() => _KPasswordTextFormFieldState();
-}
-
-class _KPasswordTextFormFieldState extends State<KPasswordTextFormField> {
-  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.labelText != null && widget.labelText!.isNotEmpty) ...[
+        if (labelText != null && labelText!.isNotEmpty) ...[
           KText(
             textAlign: TextAlign.start,
-            text: widget.labelText!,
+            text: labelText!,
             fontSize: 16,
             fontWeight: FontWeight.w700,
             color: AppColors.titleColor,
@@ -44,30 +51,26 @@ class _KPasswordTextFormFieldState extends State<KPasswordTextFormField> {
         ],
 
         TextFormField(
-          readOnly: widget.readOnly,
-          controller: widget.controller,
-          validator: widget.validator,
-          obscureText: _obscureText,
-          keyboardType: TextInputType.visiblePassword,
-          style: const TextStyle(
+          readOnly: readOnly,
+          controller: controller,
+          validator: validator,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
+          autofillHints: autofillHints,
+          maxLines: maxLines ?? 1,
+          maxLength: maxLength,
+          // 👈 ADDED HERE
+          style: TextStyle(
             fontWeight: FontWeight.w600,
             fontFamily: "GoogleSans",
           ),
-          onChanged: widget.onChanged,
+          onChanged: onChanged,
+
           decoration: InputDecoration(
-            suffixIcon: IconButton(
-              icon: Icon(
-                _obscureText ? Icons.visibility_off : Icons.visibility,
-                color: AppColors.subTitleColor,
-              ),
-              onPressed: () {
-                setState(() {
-                  _obscureText = !_obscureText;
-                });
-              },
-            ),
+            suffixIcon: suffixIcon,
             filled: true,
             fillColor: AppColors.textFieldBgColor,
+
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
@@ -97,7 +100,7 @@ class _KPasswordTextFormFieldState extends State<KPasswordTextFormField> {
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: AppColors.primaryColor, width: 1),
             ),
-            hintText: widget.hintText,
+            hintText: hintText,
             hintStyle: TextStyle(
               fontWeight: FontWeight.w500,
               fontFamily: "GoogleSans",

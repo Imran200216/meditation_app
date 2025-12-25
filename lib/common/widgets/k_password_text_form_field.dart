@@ -1,48 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:meditation_app/commons/widgets/k_text.dart';
+import 'package:meditation_app/common/widgets/k_text.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 
-class KTextFormField extends StatelessWidget {
-  final bool readOnly;
-  final String? labelText;
+class KPasswordTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
+  final String? labelText;
   final String? Function(String?)? validator;
-  final bool obscureText;
-  final TextInputType keyboardType;
-  final Iterable<String>? autofillHints;
-  final int? maxLines;
-
-  final int? maxLength; // 👈 NEW optional parameter
-
-  final Widget? suffixIcon;
   final Function(String)? onChanged;
+  final bool readOnly;
 
-  const KTextFormField({
+  const KPasswordTextFormField({
     super.key,
     required this.controller,
     required this.hintText,
-    this.validator,
-    this.obscureText = false,
-    this.keyboardType = TextInputType.text,
-    this.autofillHints,
     this.labelText,
-    this.maxLines,
-    this.readOnly = false,
-    this.suffixIcon,
+    this.validator,
     this.onChanged,
-    this.maxLength, // 👈 include in constructor
+    this.readOnly = false,
   });
+
+  @override
+  State<KPasswordTextFormField> createState() => _KPasswordTextFormFieldState();
+}
+
+class _KPasswordTextFormFieldState extends State<KPasswordTextFormField> {
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (labelText != null && labelText!.isNotEmpty) ...[
+        if (widget.labelText != null && widget.labelText!.isNotEmpty) ...[
           KText(
             textAlign: TextAlign.start,
-            text: labelText!,
+            text: widget.labelText!,
             fontSize: 16,
             fontWeight: FontWeight.w700,
             color: AppColors.titleColor,
@@ -51,26 +44,30 @@ class KTextFormField extends StatelessWidget {
         ],
 
         TextFormField(
-          readOnly: readOnly,
-          controller: controller,
-          validator: validator,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          autofillHints: autofillHints,
-          maxLines: maxLines ?? 1,
-          maxLength: maxLength,
-          // 👈 ADDED HERE
-          style: TextStyle(
+          readOnly: widget.readOnly,
+          controller: widget.controller,
+          validator: widget.validator,
+          obscureText: _obscureText,
+          keyboardType: TextInputType.visiblePassword,
+          style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontFamily: "GoogleSans",
           ),
-          onChanged: onChanged,
-
+          onChanged: widget.onChanged,
           decoration: InputDecoration(
-            suffixIcon: suffixIcon,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscureText ? Icons.visibility_off : Icons.visibility,
+                color: AppColors.subTitleColor,
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscureText = !_obscureText;
+                });
+              },
+            ),
             filled: true,
             fillColor: AppColors.textFieldBgColor,
-
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
@@ -100,7 +97,7 @@ class KTextFormField extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: AppColors.primaryColor, width: 1),
             ),
-            hintText: hintText,
+            hintText: widget.hintText,
             hintStyle: TextStyle(
               fontWeight: FontWeight.w500,
               fontFamily: "GoogleSans",

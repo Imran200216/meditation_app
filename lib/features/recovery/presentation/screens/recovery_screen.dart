@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meditation_app/commons/widgets/widgets.dart';
+import 'package:meditation_app/common/widgets/widgets.dart';
 import 'package:meditation_app/core/constants/constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/core/utils/utils.dart';
