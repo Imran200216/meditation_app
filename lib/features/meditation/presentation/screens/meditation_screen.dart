@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meditation_app/commons/widgets/k_text.dart';
-import 'package:meditation_app/core/constants/app_router_constants.dart';
+import 'package:meditation_app/commons/widgets/widgets.dart';
+import 'package:meditation_app/core/constants/constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/meditation/presentation/widgets/meditate_audio_card.dart';
+import 'package:meditation_app/features/meditation/meditation.dart';
 
 class MeditationScreen extends StatefulWidget {
   const MeditationScreen({super.key});

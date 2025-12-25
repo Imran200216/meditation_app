@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:meditation_app/commons/widgets/k_text.dart';
+import 'package:meditation_app/commons/widgets/widgets.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/yoga/presentation/widgets/yoga_card.dart';
+import 'package:meditation_app/features/yoga/yoga.dart';
 
 class YogaScreen extends StatefulWidget {
   const YogaScreen({super.key});

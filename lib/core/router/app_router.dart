@@ -1,18 +1,17 @@
 import 'package:go_router/go_router.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
-import 'package:meditation_app/features/about_us/presentation/screens/about_us_screen.dart';
-import 'package:meditation_app/features/audio/presentation/screens/audio_screen.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_sign_in_screen.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_sign_up_screen.dart';
-import 'package:meditation_app/features/bottom_nav/presentation/screens/bottom_nav.dart';
-import 'package:meditation_app/features/faq/presentation/screens/faq_screen.dart';
-import 'package:meditation_app/features/intro/presentation/screens/intro_screen.dart';
-import 'package:meditation_app/features/language/presentation/screens/language_select_screen.dart';
-import 'package:meditation_app/features/personal_info/presentation/screens/personal_info_screen.dart';
-import 'package:meditation_app/features/recovery/presentation/screens/recovery_screen.dart';
-import 'package:meditation_app/features/reminders/presentation/screens/reminders_screen.dart';
-import 'package:meditation_app/features/splash/presentation/screens/splash_screen.dart';
-import 'package:meditation_app/features/welcome/presentation/screens/welcome_screen.dart';
+import 'package:meditation_app/features/splash/splash.dart';
+import 'package:meditation_app/features/intro/intro.dart';
+import 'package:meditation_app/features/auth/auth.dart';
+import 'package:meditation_app/features/welcome/welcome.dart';
+import 'package:meditation_app/features/recovery/recovery.dart';
+import 'package:meditation_app/features/reminders/reminders.dart';
+import 'package:meditation_app/features/language/language.dart';
+import 'package:meditation_app/features/bottom_nav/bottom_nav.dart';
+import 'package:meditation_app/features/personal_info/personal_info.dart';
+import 'package:meditation_app/features/faq/faq.dart';
+import 'package:meditation_app/features/about_us/about_us.dart';
+import 'package:meditation_app/features/audio/audio.dart';
 
 GoRouter appRouter = GoRouter(
   initialLocation: "/splash",

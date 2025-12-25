@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meditation_app/commons/widgets/k_appbar.dart';
+import 'package:meditation_app/commons/widgets/widgets.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/faq/presentation/widgets/faq_expansion_title.dart';
+import 'package:meditation_app/features/faq/faq.dart';
 
 class FaqScreen extends StatelessWidget {
   const FaqScreen({super.key});

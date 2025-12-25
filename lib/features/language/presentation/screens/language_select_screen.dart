@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:meditation_app/commons/widgets/k_text.dart';
+import 'package:meditation_app/commons/widgets/widgets.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 
 class LanguageSelectScreen extends StatelessWidget {
@@ -25,8 +25,6 @@ class LanguageSelectScreen extends StatelessWidget {
               fontWeight: FontWeight.w800,
               color: AppColors.titleColor,
             ),
-
-
           ],
         ),
       ),

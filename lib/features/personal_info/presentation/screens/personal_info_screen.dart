@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meditation_app/commons/widgets/k_appbar.dart';
-import 'package:meditation_app/commons/widgets/k_filled_btn.dart';
-import 'package:meditation_app/commons/widgets/k_password_text_form_field.dart';
-import 'package:meditation_app/commons/widgets/k_text_form_field.dart';
+import 'package:meditation_app/commons/widgets/widgets.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 
 class PersonalInfoScreen extends StatefulWidget {

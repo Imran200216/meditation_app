@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/bottom_nav/presentation/cubit/bottom_nav/bottom_nav_cubit.dart';
-import 'package:meditation_app/features/home/presentation/screens/home_screen.dart';
-import 'package:meditation_app/features/meditation/presentation/screens/meditation_screen.dart';
-import 'package:meditation_app/features/profile/presentation/screens/profile_screen.dart';
-import 'package:meditation_app/features/yoga/presentation/screens/yoga_screen.dart';
+import 'package:meditation_app/core/constants/constants.dart';
+import 'package:meditation_app/features/home/home.dart';
+import 'package:meditation_app/features/meditation/meditation.dart';
+import 'package:meditation_app/features/profile/presentation/profile_presentation.dart';
+import 'package:meditation_app/features/yoga/presentation/yoga_presentation.dart';
+import 'package:meditation_app/features/bottom_nav/bottom_nav.dart';
 
 class BottomNav extends StatelessWidget {
   const BottomNav({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Screens
     final List<Widget> screens = [
       const HomeScreen(),
       const MeditationScreen(),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meditation_app/commons/widgets/k_appbar.dart';
-import 'package:meditation_app/commons/widgets/k_text.dart';
-import 'package:meditation_app/core/constants/app_content_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/core/utils/url_launcher_utils.dart';
-import 'package:meditation_app/features/about_us/presentation/widgets/about_us_team_card.dart';
+import 'package:meditation_app/commons/widgets/widgets.dart';
+import 'package:meditation_app/core/constants/constants.dart';
+import 'package:meditation_app/core/utils/utils.dart';
+import 'package:meditation_app/features/about_us/about_us.dart';
 
 class AboutUsScreen extends StatelessWidget {
   const AboutUsScreen({super.key});

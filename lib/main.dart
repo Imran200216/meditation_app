@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meditation_app/core/router/app_router.dart';
+import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/di/service_locator.dart';
 import 'package:meditation_app/providers/app_bloc_providers.dart';
 
@@ -21,7 +22,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
-        theme: ThemeData(colorScheme: .fromSeed(seedColor: Colors.deepPurple)),
+        theme: ThemeData(
+          colorScheme: .fromSeed(seedColor: AppColors.primaryColor),
+        ),
         routerConfig: appRouter,
       ),
     );
