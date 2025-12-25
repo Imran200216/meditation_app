@@ -50,8 +50,10 @@ dependencies:
   # connectivity_plus
   connectivity_plus: ^7.0.0
 
-  # just audio
+  # audio
   just_audio: ^0.10.5
+  just_audio_background: ^0.0.1-beta.17
+  audio_service: ^0.18.18
 
 
 dev_dependencies:
@@ -59,7 +61,8 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
 
-
+  # change app package name
+  change_app_package_name: ^1.5.0
 
 flutter:
   uses-material-design: true

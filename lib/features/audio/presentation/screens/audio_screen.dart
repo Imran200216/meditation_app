@@ -1,13 +1,14 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/common/widgets/widgets.dart';
 import 'package:meditation_app/core/constants/constants.dart';
 import 'package:meditation_app/core/utils/utils.dart';
 import 'package:meditation_app/features/audio/audio.dart';
+import 'package:meditation_app/main.dart'; // Import to access audioHandler
 
 class AudioScreen extends StatefulWidget {
   const AudioScreen({super.key});
@@ -17,27 +18,25 @@ class AudioScreen extends StatefulWidget {
 }
 
 class _AudioScreenState extends State<AudioScreen> {
-  final AudioPlayer _player = AudioPlayer();
-  Duration _duration = Duration.zero;
-  Duration _position = Duration.zero;
-
   @override
   void initState() {
     super.initState();
+    _initAudio();
+  }
 
-    _player.setUrl(
+  Future<void> _initAudio() async {
+    // Import audioHandler from main.dart
+    await audioHandler.initAudioSource(
       "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "7 Days of Calm",
+      "Daily Meditation",
     );
+  }
 
-    _player.durationStream.listen((d) {
-      if (d != null) {
-        setState(() => _duration = d);
-      }
-    });
-
-    _player.positionStream.listen((p) {
-      setState(() => _position = p);
-    });
+  @override
+  void dispose() {
+    // Don't dispose the player here as it should continue in background
+    super.dispose();
   }
 
   @override
@@ -118,160 +117,155 @@ class _AudioScreenState extends State<AudioScreen> {
             right: 0,
             left: 0,
             bottom: 0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Title
-                KText(
-                  maxLines: 4,
-                  softWrap: true,
-                  text: "Daily Meditation",
-                  textAlign: TextAlign.start,
-                  overflow: TextOverflow.visible,
-                  fontSize: 34,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.titleColor,
-                ),
+            child: StreamBuilder<MediaItem?>(
+              stream: audioHandler.mediaItem,
+              builder: (context, mediaSnapshot) {
+                final mediaItem = mediaSnapshot.data;
 
-                const SizedBox(height: 16),
+                return StreamBuilder<PlaybackState>(
+                  stream: audioHandler.playbackState,
+                  builder: (context, playbackSnapshot) {
+                    final playbackState = playbackSnapshot.data;
+                    final playing = playbackState?.playing ?? false;
+                    final position = playbackState?.position ?? Duration.zero;
+                    final duration = mediaItem?.duration ?? Duration.zero;
 
-                // Sub Title
-                KText(
-                  maxLines: 2,
-                  softWrap: true,
-                  text: "7 days of calm",
-                  textAlign: TextAlign.start,
-                  overflow: TextOverflow.visible,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.subTitleParaColor,
-                ),
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Title
+                        KText(
+                          maxLines: 4,
+                          softWrap: true,
+                          text: mediaItem?.album ?? "Daily Meditation",
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.visible,
+                          fontSize: 34,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.titleColor,
+                        ),
 
-                const SizedBox(height: 80),
+                        const SizedBox(height: 16),
 
-                Row(
-                  spacing: 20,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // Before Audio
-                    GestureDetector(
-                      onTap: () async {
-                        HapticFeedback.heavyImpact();
+                        // Sub Title
+                        KText(
+                          maxLines: 2,
+                          softWrap: true,
+                          text: mediaItem?.title ?? "7 days of calm",
+                          textAlign: TextAlign.start,
+                          overflow: TextOverflow.visible,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.subTitleParaColor,
+                        ),
 
-                        final current = _player.position;
-                        final newPosition =
-                            current - const Duration(seconds: 15);
+                        const SizedBox(height: 80),
 
-                        await _player.seek(
-                          newPosition > Duration.zero
-                              ? newPosition
-                              : Duration.zero,
-                        );
-                      },
-                      child: SvgPicture.asset(
-                        AppAssetsConstants.beforeAudio,
-                        height: 44,
-                        width: 44,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                        Row(
+                          spacing: 20,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            // Before Audio (15 seconds back)
+                            GestureDetector(
+                              onTap: () async {
+                                HapticFeedback.heavyImpact();
+                                final newPosition = position - const Duration(seconds: 15);
+                                await audioHandler.seek(
+                                  newPosition > Duration.zero ? newPosition : Duration.zero,
+                                );
+                              },
+                              child: SvgPicture.asset(
+                                AppAssetsConstants.beforeAudio,
+                                height: 44,
+                                width: 44,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
 
-                    // Play Pause Icon Btn
-                    GestureDetector(
-                      onTap: () {
-                        HapticFeedback.heavyImpact();
+                            // Play Pause Icon Btn
+                            GestureDetector(
+                              onTap: () {
+                                HapticFeedback.heavyImpact();
+                                playing ? audioHandler.pause() : audioHandler.play();
+                              },
+                              child: CircleAvatar(
+                                radius: 44,
+                                backgroundColor: AppColors.playPauseBgColor,
+                                child: CircleAvatar(
+                                  backgroundColor: AppColors.playPauseIconBgColor,
+                                  radius: 34,
+                                  child: Icon(
+                                    playing ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                                    color: AppColors.playPauseIconColor,
+                                    size: 40,
+                                  ),
+                                ),
+                              ),
+                            ),
 
-                        // Play Pause Functionality
-                        _player.playing ? _player.pause() : _player.play();
-                      },
-                      child: CircleAvatar(
-                        radius: 44,
-                        backgroundColor: AppColors.playPauseBgColor,
-                        child: CircleAvatar(
-                          backgroundColor: AppColors.playPauseIconBgColor,
-                          radius: 34,
-                          child: Icon(
-                            _player.playing
-                                ? Icons.pause_rounded
-                                : Icons.play_arrow_rounded,
-                            color: AppColors.playPauseIconColor,
-                            size: 40,
+                            // After Audio (15 seconds forward)
+                            GestureDetector(
+                              onTap: () async {
+                                HapticFeedback.heavyImpact();
+                                final newPosition = position + const Duration(seconds: 15);
+                                await audioHandler.seek(
+                                  newPosition < duration ? newPosition : duration,
+                                );
+                              },
+                              child: SvgPicture.asset(
+                                AppAssetsConstants.afterAudio,
+                                height: 44,
+                                width: 44,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 50),
+
+                        Slider(
+                          min: 0,
+                          max: duration.inSeconds.toDouble(),
+                          value: position.inSeconds.clamp(0, duration.inSeconds).toDouble(),
+                          onChanged: (value) {
+                            audioHandler.seek(Duration(seconds: value.toInt()));
+                          },
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              KText(
+                                maxLines: 1,
+                                softWrap: true,
+                                text: audioTimeFormatter(position),
+                                textAlign: TextAlign.start,
+                                overflow: TextOverflow.visible,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              KText(
+                                maxLines: 1,
+                                softWrap: true,
+                                text: audioTimeFormatter(duration),
+                                textAlign: TextAlign.end,
+                                overflow: TextOverflow.visible,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ],
                           ),
                         ),
-                      ),
-                    ),
-
-                    // After Audio
-                    GestureDetector(
-                      onTap: () async {
-                        HapticFeedback.heavyImpact();
-
-                        final current = _player.position;
-                        final duration = _player.duration;
-
-                        if (duration == null) return;
-
-                        final newPosition =
-                            current + const Duration(seconds: 15);
-
-                        await _player.seek(
-                          newPosition < duration ? newPosition : duration,
-                        );
-                      },
-                      child: SvgPicture.asset(
-                        AppAssetsConstants.afterAudio,
-                        height: 44,
-                        width: 44,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 50),
-
-                Slider(
-                  min: 0,
-                  max: _duration.inSeconds.toDouble(),
-                  value: _position.inSeconds
-                      .clamp(0, _duration.inSeconds)
-                      .toDouble(),
-                  onChanged: (value) {
-                    _player.seek(Duration(seconds: value.toInt()));
+                      ],
+                    );
                   },
-                ),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      KText(
-                        maxLines: 1,
-                        softWrap: true,
-                        text: audioTimeFormatter(_position),
-                        textAlign: TextAlign.start,
-                        overflow: TextOverflow.visible,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-
-                      KText(
-                        maxLines: 1,
-                        softWrap: true,
-                        text: audioTimeFormatter(_duration),
-                        textAlign: TextAlign.end,
-                        overflow: TextOverflow.visible,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
         ],
