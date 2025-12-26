@@ -24,4 +24,8 @@ class AppRouterConstants {
   static const String aboutUs = "aboutUs";
 
   static const String audio = "audio";
+
+  static const String yogaLevelSubTitle = "yogaLevelSubTitle";
+
+  static const String yogaDescription = "yogaDescription";
 }

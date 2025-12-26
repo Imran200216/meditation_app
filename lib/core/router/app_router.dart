@@ -12,6 +12,7 @@ import 'package:meditation_app/features/personal_info/personal_info.dart';
 import 'package:meditation_app/features/faq/faq.dart';
 import 'package:meditation_app/features/about_us/about_us.dart';
 import 'package:meditation_app/features/audio/audio.dart';
+import 'package:meditation_app/features/yoga/presentation/yoga_presentation.dart';
 
 GoRouter appRouter = GoRouter(
   initialLocation: "/splash",
@@ -131,6 +132,24 @@ GoRouter appRouter = GoRouter(
       name: AppRouterConstants.audio,
       builder: (context, state) {
         return AudioScreen();
+      },
+    ),
+
+    // Yoga Level SubTitle Screen
+    GoRoute(
+      path: '/yogaLevelSubTitle',
+      name: AppRouterConstants.yogaLevelSubTitle,
+      builder: (context, state) {
+        return YogaLevelSubTitleScreen();
+      },
+    ),
+
+    // Yoga Description Screen
+    GoRoute(
+      path: '/yogaDescription',
+      name: AppRouterConstants.yogaDescription,
+      builder: (context, state) {
+        return YogaDescriptionScreen();
       },
     ),
   ],

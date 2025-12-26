@@ -6,9 +6,20 @@ import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 
 class YogaCard extends StatelessWidget {
+  final String yogaLevel;
+  final String yogaDescription;
+  final String timeTaken;
+  final String imageUrl;
   final VoidCallback onTap;
 
-  const YogaCard({super.key, required this.onTap});
+  const YogaCard({
+    super.key,
+    required this.onTap,
+    required this.yogaLevel,
+    required this.yogaDescription,
+    required this.timeTaken,
+    required this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +48,7 @@ class YogaCard extends StatelessWidget {
             children: [
               // Background Image
               CachedNetworkImage(
-                imageUrl:
-                    "https://plus.unsplash.com/premium_photo-1674675646725-5b4aca5adb21?q=80&w=1171&auto=format&fit=crop",
+                imageUrl: imageUrl,
                 width: double.infinity,
                 height: double.infinity,
                 fit: BoxFit.cover,
@@ -84,22 +94,24 @@ class YogaCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: KText(
-                        text: "Level 1",
+                        text: yogaLevel,
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: AppColors.bgColor,
                       ),
                     ),
 
                     const SizedBox(height: 8),
 
-                    // Title
+                    // Description
                     KText(
                       maxLines: 2,
-                      text: "Modern Wellness Pose Yoga",
-                      fontSize: 18,
+                      text: yogaDescription,
+                      textAlign: TextAlign.start,
+                      overflow: TextOverflow.visible,
+                      fontSize: 16,
                       fontWeight: FontWeight.w800,
-                      color: Colors.white,
+                      color: AppColors.bgColor,
                     ),
 
                     const SizedBox(height: 6),
@@ -113,7 +125,9 @@ class YogaCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 6),
                         KText(
-                          text: "3 mins",
+                          text: timeTaken,
+                          maxLines: 1,
+                          textAlign: TextAlign.start,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Colors.white70,

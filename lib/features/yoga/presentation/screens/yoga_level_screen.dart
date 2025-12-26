@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meditation_app/common/widgets/widgets.dart';
+import 'package:meditation_app/core/constants/constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/features/yoga/yoga.dart';
 
-class YogaScreen extends StatefulWidget {
-  const YogaScreen({super.key});
+class YogaLevelScreen extends StatefulWidget {
+  const YogaLevelScreen({super.key});
 
   @override
-  State<YogaScreen> createState() => _YogaScreenState();
+  State<YogaLevelScreen> createState() => _YogaLevelScreenState();
 }
 
-class _YogaScreenState extends State<YogaScreen> {
+class _YogaLevelScreenState extends State<YogaLevelScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,15 +78,23 @@ class _YogaScreenState extends State<YogaScreen> {
                     return const SizedBox(height: 12);
                   },
                   itemBuilder: (context, index) {
-                    return YogaCard(onTap: () {})
+                    return YogaCard(
+                          onTap: () {
+                            // Yoga Level SubTitle Screen
+                            GoRouter.of(
+                              context,
+                            ).pushNamed(AppRouterConstants.yogaLevelSubTitle);
+                          },
+                          yogaLevel: 'Level 1',
+                          yogaDescription:
+                              "This course is for beginners. Boost up your enerfy level.",
+                          timeTaken: '13 Min',
+                          imageUrl:
+                              "https://i.pinimg.com/originals/64/41/61/644161b5ce15397473f2c4a49620ee8f.gif",
+                        )
                         .animate()
-                        .fadeIn(duration: 500.ms, delay: (350 + index * 60).ms)
-                        .slideY(
-                          begin: 0.25,
-                          end: 0,
-                          duration: 500.ms,
-                          curve: Curves.easeOutCubic,
-                        );
+                        .fadeIn(delay: (index * 40).ms, duration: 200.ms)
+                        .slideY(begin: 0.3, end: 0, curve: Curves.easeOut);
                   },
                 ),
               ],

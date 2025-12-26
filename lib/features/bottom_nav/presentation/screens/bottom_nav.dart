@@ -18,7 +18,7 @@ class BottomNav extends StatelessWidget {
     final List<Widget> screens = [
       const HomeScreen(),
       const MeditationScreen(),
-      const YogaScreen(),
+      const YogaLevelScreen(),
       const ProfileScreen(),
     ];
 
