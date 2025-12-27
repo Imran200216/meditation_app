@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meditation_app/common/widgets/widgets.dart';
-import 'package:meditation_app/core/constants/constants.dart';
+import 'package:meditation_app/common/widgets/k_text.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/yoga/yoga.dart';
+import 'package:meditation_app/features/yoga/presentation/widgets/yoga_card.dart';
 
 class YogaLevelScreen extends StatefulWidget {
   const YogaLevelScreen({super.key});

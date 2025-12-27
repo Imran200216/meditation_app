@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:meditation_app/common/widgets/k_text.dart';
+import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/common/widgets/widgets.dart';
-import 'package:meditation_app/core/constants/constants.dart';
-import 'package:meditation_app/core/utils/utils.dart';
-import 'package:meditation_app/features/audio/audio.dart';
-import 'package:meditation_app/main.dart'; // Import to access audioHandler
+import 'package:meditation_app/core/utils/formatter_utils.dart';
+import 'package:meditation_app/features/audio/presentation/widgets/audio_leading_trailing_icon_btn.dart';
+import 'package:meditation_app/main.dart';
 
 class AudioScreen extends StatefulWidget {
   const AudioScreen({super.key});

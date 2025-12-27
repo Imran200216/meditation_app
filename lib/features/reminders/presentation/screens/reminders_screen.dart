@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meditation_app/common/widgets/widgets.dart';
-import 'package:meditation_app/core/constants/constants.dart';
+import 'package:meditation_app/common/widgets/k_filled_btn.dart';
+import 'package:meditation_app/common/widgets/k_text.dart';
+import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 
 class RemindersScreen extends StatelessWidget {

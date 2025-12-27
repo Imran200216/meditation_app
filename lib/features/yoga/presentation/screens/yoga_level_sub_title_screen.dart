@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:meditation_app/common/widgets/k_appbar.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/features/yoga/presentation/yoga_presentation.dart';
+import 'package:meditation_app/features/yoga/presentation/widgets/yoga_level_sub_title_card.dart';
 
 class YogaLevelSubTitleScreen extends StatelessWidget {
   const YogaLevelSubTitleScreen({super.key});

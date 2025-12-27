@@ -1,1 +1,0 @@
-export 'screens/personal_info_screen.dart';

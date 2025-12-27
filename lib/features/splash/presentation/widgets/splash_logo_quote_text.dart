@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:meditation_app/common/widgets/k_text.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
-import 'package:meditation_app/common/widgets/widgets.dart';
 
 class SplashLogoQuoteText extends StatelessWidget {
   final String text;
