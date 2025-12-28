@@ -1,6 +1,9 @@
 class AppAssetsConstants {
   static const String intro = "assets/svg/intro.svg";
 
+  static const String forgetPasswordSuccess =
+      "assets/svg/forget-password-success.svg";
+
   static const String authBg = "assets/svg/auth-bg.svg";
 
   static const String welcome = "assets/svg/welcome.svg";

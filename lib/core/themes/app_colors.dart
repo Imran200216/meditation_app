@@ -32,4 +32,8 @@ class AppColors {
   static const Color playPauseIconBgColor = Color(0xFF3F414E);
 
   static const Color playPauseIconColor = Color(0xFFFBFBFB);
+
+  static const Color grey100 = Color(0xFFF2F2F7);
+
+  static const Color grey300 = Color(0xFFE5E5EA);
 }

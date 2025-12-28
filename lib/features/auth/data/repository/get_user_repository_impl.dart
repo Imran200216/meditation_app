@@ -1,3 +1,4 @@
+import 'package:meditation_app/core/utils/logger_utils.dart';
 import 'package:meditation_app/features/auth/data/datasource/get_user_local_data_source.dart';
 import 'package:meditation_app/features/auth/data/datasource/get_user_remote_data_source.dart';
 import 'package:meditation_app/features/auth/domain/entities/user_entity.dart';
@@ -18,8 +19,11 @@ class GetUserRepositoryImpl implements GetUserRepository {
     final localUser = await getUserLocalDataSource.getUser();
 
     if (localUser != null) {
+      LoggerUtils.logInfo("User fetched from local Hive storage: $localUser");
       return localUser; // ✅ return cached user
     }
+
+    LoggerUtils.logInfo("No user in local storage, fetching from remote...");
 
     // 2️⃣ Fetch from remote
     final remoteUser = await getUserRemoteDataSource.getUserBYIdAuth(
@@ -28,6 +32,7 @@ class GetUserRepositoryImpl implements GetUserRepository {
 
     // 3️⃣ Save to local
     await getUserLocalDataSource.saveUser(remoteUser);
+    LoggerUtils.logInfo("User saved to local Hive storage: $remoteUser");
 
     // 4️⃣ Return user
     return remoteUser;

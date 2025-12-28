@@ -17,9 +17,11 @@ class GetUserLocalDataSource {
 
   /// Get user from local storage
   Future<UserModel?> getUser() async {
-    final data = HiveService.getData(boxName: _boxName, key: _userKey);
+    final data = await HiveService.getData(boxName: _boxName, key: _userKey);
 
-    return UserModel.fromJson(Map<String, dynamic>.from(await data));
+    if (data == null) return null; // <-- handle null safely
+
+    return UserModel.fromJson(Map<String, dynamic>.from(data));
   }
 
   /// Clear user (logout)

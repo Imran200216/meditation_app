@@ -34,7 +34,7 @@ List<BlocProvider> appBlocProvider = [
   ),
 
   // Get User Auth Details Bloc
-  BlocProvider(
+  BlocProvider<GetUserAuthDetailsBloc>(
     create: (context) =>
         GetUserAuthDetailsBloc(getUserUseCase: getIt<GetUserUseCase>()),
   ),

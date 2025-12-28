@@ -11,7 +11,9 @@ import 'package:meditation_app/common/widgets/k_text.dart';
 import 'package:meditation_app/common/widgets/k_text_form_field.dart';
 import 'package:meditation_app/core/bloc/connectivity/connectivity_bloc.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
+import 'package:meditation_app/core/constants/app_db_constants.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
+import 'package:meditation_app/core/service/hive_service.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/core/utils/logger_utils.dart';
 import 'package:meditation_app/core/utils/text_form_filed_validators.dart';
@@ -190,13 +192,13 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                         BlocListener<EmailAuthBloc, EmailAuthState>(
                           listener: (context, state) {
                             if (state is EmailLoginAuthSuccess) {
-                              KSnackBar.success(context, "Login Successful");
-
-                              GoRouter.of(context).pushReplacementNamed(
-                                AppRouterConstants.welcome,
+                              // Get User Auth Details Event
+                              context.read<GetUserAuthDetailsBloc>().add(
+                                GetUserByIdAuthEvent(
+                                  userId: state.emailAuthLoginEntity.user
+                                      .toString(),
+                                ),
                               );
-
-                              clearAllControllers();
                             } else if (state is EmailLoginAuthFailure) {
                               KSnackBar.error(context, state.message);
                             }
@@ -207,16 +209,43 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                           GetUserAuthDetailsBloc,
                           GetUserAuthDetailsState
                         >(
-                          listener: (context, state) {
+                          listener: (context, state) async {
                             if (state is GetUserAuthDetailsSuccess) {
                               final user = state.userEntity;
 
                               LoggerUtils.logInfo("The User details $user");
 
+                              // Bottom Nav
                               GoRouter.of(context).pushReplacementNamed(
                                 AppRouterConstants.bottomNav,
                               );
-                            } else if (state is GetUserAuthDetailsFailure) {}
+
+                              // Save isAuth Status in Hive
+                              HiveService.saveData(
+                                boxName: AppDbConstants.userBox,
+                                key: AppDbConstants.userAuthLoggedStatus,
+                                value: true,
+                              );
+
+                              // Read the value from Hive
+                              final isLogged = await HiveService.getData(
+                                boxName: AppDbConstants.userBox,
+                                key: AppDbConstants.userAuthLoggedStatus,
+                              );
+
+                              LoggerUtils.logInfo(
+                                "Hive Logged Status: $isLogged",
+                              );
+
+                              // Clear Controllers
+                              clearAllControllers();
+
+                              KSnackBar.success(context, "Login Successful");
+                            } else if (state is GetUserAuthDetailsFailure) {
+                              LoggerUtils.logError(
+                                "The Get User Auth Details Failure: ${state.message.toString()}",
+                              );
+                            }
                           },
                         ),
                       ],
@@ -262,7 +291,12 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
 
                     // Forget Password ?
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // AuthForget Password Screen
+                        GoRouter.of(
+                          context,
+                        ).pushNamed(AppRouterConstants.authForgetPassword);
+                      },
                       child: KText(
                         maxLines: 1,
                         softWrap: true,

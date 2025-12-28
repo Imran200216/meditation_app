@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meditation_app/common/widgets/k_text.dart';
+import 'package:meditation_app/core/constants/app_db_constants.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
+import 'package:meditation_app/core/service/hive_service.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
+import 'package:meditation_app/core/utils/logger_utils.dart';
 import 'package:meditation_app/features/splash/presentation/widgets/splash_logo_quote_text.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -36,9 +39,24 @@ class _SplashScreenState extends State<SplashScreen> {
     // Load App Info
     _loadAppInfo();
 
-    // Intro Screen
+    _decideRoute();
+  }
+
+  Future<void> _decideRoute() async {
+    // Read the value from Hive
+    final isLoggedRaw = await HiveService.getData(
+      boxName: AppDbConstants.userBox,
+      key: AppDbConstants.userAuthLoggedStatus,
+    );
+
+    final isLogged = (isLoggedRaw as bool?) ?? false;
+
+    LoggerUtils.logInfo("Hive Logged Status: $isLogged");
+
     Future.delayed(const Duration(seconds: 3), () {
-      GoRouter.of(context).pushReplacementNamed(AppRouterConstants.intro);
+      GoRouter.of(context).pushReplacementNamed(
+        isLogged ? AppRouterConstants.bottomNav : AppRouterConstants.intro,
+      );
     });
   }
 

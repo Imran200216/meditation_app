@@ -2,6 +2,8 @@ import 'package:go_router/go_router.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/features/about_us/presentation/screens/about_us_screen.dart';
 import 'package:meditation_app/features/audio/presentation/screens/audio_screen.dart';
+import 'package:meditation_app/features/auth/presentation/screens/auth_forget_password_screen.dart';
+import 'package:meditation_app/features/auth/presentation/screens/auth_forget_password_success_screen.dart';
 import 'package:meditation_app/features/auth/presentation/screens/auth_sign_in_screen.dart';
 import 'package:meditation_app/features/auth/presentation/screens/auth_sign_up_screen.dart';
 import 'package:meditation_app/features/bottom_nav/presentation/screens/bottom_nav.dart';
@@ -53,6 +55,24 @@ GoRouter appRouter = GoRouter(
       name: AppRouterConstants.authSignIn,
       builder: (context, state) {
         return AuthSignInScreen();
+      },
+    ),
+
+    // Auth Forget Password Screen
+    GoRoute(
+      path: '/authForgetPassword',
+      name: AppRouterConstants.authForgetPassword,
+      builder: (context, state) {
+        return AuthForgetPasswordScreen();
+      },
+    ),
+
+    // Auth Forget Password Success Screen
+    GoRoute(
+      path: '/authForgetPasswordSuccess',
+      name: AppRouterConstants.authForgetPasswordSuccess,
+      builder: (context, state) {
+        return AuthForgetPasswordSuccessScreen();
       },
     ),
 

@@ -4,7 +4,7 @@ import 'package:meditation_app/features/auth/data/datasource/email_auth_data_sou
 import 'package:meditation_app/features/auth/data/datasource/get_user_local_data_source.dart';
 import 'package:meditation_app/features/auth/data/datasource/get_user_remote_data_source.dart';
 import 'package:meditation_app/features/auth/data/repository/email_auth_repository_impl.dart';
-import 'package:meditation_app/features/auth/data/repository/get_user_repository.dart';
+import 'package:meditation_app/features/auth/data/repository/get_user_repository_impl.dart';
 import 'package:meditation_app/features/auth/domain/repository/email_auth_repository.dart';
 import 'package:meditation_app/features/auth/domain/repository/get_user_repository.dart';
 import 'package:meditation_app/features/auth/domain/usecase/get_user_use_case.dart';

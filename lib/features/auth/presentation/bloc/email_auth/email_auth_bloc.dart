@@ -56,11 +56,12 @@ class EmailAuthBloc extends Bloc<EmailAuthEvent, EmailAuthState> {
           password: event.password,
         );
 
-        if (result.token.isNotEmpty) {
+        if ((result.token.isNotEmpty)) {
           emit(EmailLoginAuthSuccess(emailAuthLoginEntity: result));
           LoggerUtils.logInfo("The Email Login: ${result.token}");
         } else {
           emit(EmailLoginAuthFailure(message: "Login Failure"));
+          LoggerUtils.logError("Login failed: token is null or empty");
         }
       } catch (e) {
         emit(EmailLoginAuthFailure(message: e.toString()));

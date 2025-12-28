@@ -7,6 +7,10 @@ class AppRouterConstants {
 
   static const String authSignIn = "authSignIn";
 
+  static const String authForgetPassword = "authForgetPassword";
+
+  static const String authForgetPasswordSuccess = "authForgetPasswordSuccess";
+
   static const String welcome = "welcome";
 
   static const String recovery = "recovery";

@@ -16,11 +16,30 @@ class ProfileAvatar extends StatelessWidget {
   });
 
   bool _isLocalFile(String path) {
-    return !path.startsWith('http') && !path.startsWith('https');
+    return path.isNotEmpty &&
+        !path.startsWith('http') &&
+        !path.startsWith('https');
+  }
+
+  bool _isValidUrl(String path) {
+    return path.isNotEmpty &&
+        (path.startsWith('http') || path.startsWith('https'));
   }
 
   @override
   Widget build(BuildContext context) {
+    // Handle empty or invalid paths
+    if (personImageUrl.isEmpty) {
+      return ClipOval(
+        child: Image.asset(
+          AppAssetsConstants.personPlaceHolder,
+          width: width,
+          height: height,
+          fit: BoxFit.cover,
+        ),
+      );
+    }
+
     final isFile = _isLocalFile(personImageUrl);
 
     return ClipOval(
@@ -30,6 +49,12 @@ class ProfileAvatar extends StatelessWidget {
               width: width,
               height: height,
               fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Image.asset(
+                AppAssetsConstants.personPlaceHolder,
+                width: width,
+                height: height,
+                fit: BoxFit.cover,
+              ),
             )
           : CachedNetworkImage(
               imageUrl: personImageUrl,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:meditation_app/common/widgets/k_text.dart';
+import 'package:meditation_app/core/themes/app_colors.dart';
 
 class KFilledBtn extends StatelessWidget {
   final String btnTitle;
@@ -45,13 +46,24 @@ class KFilledBtn extends StatelessWidget {
             color: btnBgColor,
           ),
           child: Center(
-            child: KText(
-              text: isLoading ? "Loading" : btnTitle,
-              fontSize: fontSize,
-              color: btnTitleColor,
-              fontWeight: FontWeight.w600,
-              textAlign: TextAlign.center,
-            ),
+            child: isLoading
+                ? const SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator.adaptive(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppColors.bgColor,
+                      ),
+                      strokeWidth: 2.5,
+                    ),
+                  )
+                : KText(
+                    text: btnTitle,
+                    fontSize: fontSize,
+                    color: btnTitleColor,
+                    fontWeight: FontWeight.w600,
+                    textAlign: TextAlign.center,
+                  ),
           ),
         ),
       ),

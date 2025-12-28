@@ -101,6 +101,10 @@ class KTextFormField extends StatelessWidget {
               borderSide: BorderSide(color: AppColors.primaryColor, width: 1),
             ),
             hintText: hintText,
+            errorStyle: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontFamily: "GoogleSans",
+            ),
             hintStyle: TextStyle(
               fontWeight: FontWeight.w500,
               fontFamily: "GoogleSans",
