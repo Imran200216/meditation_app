@@ -1,12 +1,14 @@
 import 'package:meditation_app/core/service/graphql_service.dart';
-import 'package:meditation_app/features/auth/data/models/email_auth_model.dart';
+import 'package:meditation_app/features/auth/data/models/email_auth_login_model.dart';
+import 'package:meditation_app/features/auth/data/models/email_auth_register_model.dart';
 
 class EmailAuthDataSource {
   final GraphQLService graphQLService;
 
   EmailAuthDataSource({required this.graphQLService});
 
-  Future<EmailAuthModel> registerWithEmail({
+  // Register With Email
+  Future<EmailAuthRegisterModel> registerWithEmail({
     required String firstName,
     required String lastName,
     required String email,
@@ -35,6 +37,26 @@ class EmailAuthDataSource {
 ''');
 
     final data = result.data!['register_user'];
-    return EmailAuthModel.fromJson(data);
+    return EmailAuthRegisterModel.fromJson(data);
+  }
+
+  // Login With Email
+  Future<EmailAuthLoginModel> loginWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    final result = await graphQLService.performQuery(''' 
+    
+    query Login_user {
+  login_user(email: "$email", password: "$password") {
+    token
+    user
+  }
+}
+
+    ''');
+
+    final data = result.data!['login_user'];
+    return EmailAuthLoginModel.fromJson(data);
   }
 }

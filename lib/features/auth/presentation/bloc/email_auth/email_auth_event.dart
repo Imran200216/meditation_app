@@ -35,3 +35,14 @@ final class RegisterWithEmailEvent extends EmailAuthEvent {
     profileImage,
   ];
 }
+
+final class LoginWithEmailEvent extends EmailAuthEvent {
+  final String email;
+  final String password;
+
+  const LoginWithEmailEvent({required this.email, required this.password});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [email, password];
+}

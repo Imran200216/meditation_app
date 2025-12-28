@@ -1,4 +1,4 @@
-import 'package:meditation_app/features/auth/domain/entities/email_auth_entity.dart';
+import 'package:meditation_app/features/auth/domain/entities/email_auth_register_entity.dart';
 import 'package:meditation_app/features/auth/domain/repository/email_auth_repository.dart';
 
 class RegisterWithEmailUseCase {
@@ -6,7 +6,7 @@ class RegisterWithEmailUseCase {
 
   RegisterWithEmailUseCase({required this.emailAuthRepository});
 
-  Future<EmailAuthEntity> call({
+  Future<EmailAuthRegisterEntity> call({
     required String firstName,
     required String lastName,
     required String password,

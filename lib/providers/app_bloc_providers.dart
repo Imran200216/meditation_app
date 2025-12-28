@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meditation_app/core/bloc/connectivity/connectivity_bloc.dart';
+import 'package:meditation_app/features/auth/domain/usecase/login_with_email_use_case.dart';
 import 'package:meditation_app/features/auth/domain/usecase/register_with_email_usecase.dart';
 import 'package:meditation_app/features/auth/presentation/bloc/email_auth/email_auth_bloc.dart';
 import 'package:meditation_app/features/bottom_nav/presentation/cubit/bottom_nav/bottom_nav_cubit.dart';
@@ -26,6 +27,7 @@ List<BlocProvider> appBlocProvider = [
   BlocProvider<EmailAuthBloc>(
     create: (context) => EmailAuthBloc(
       registerWithEmailUseCase: getIt<RegisterWithEmailUseCase>(),
+      loginWithEmailUseCase: getIt<LoginWithEmailUseCase>(),
     ),
   ),
 ];
