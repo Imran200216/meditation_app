@@ -1,9 +1,10 @@
+import 'package:meditation_app/core/constants/app_db_constants.dart';
 import 'package:meditation_app/core/service/hive_service.dart';
 import 'package:meditation_app/features/auth/data/models/user_model.dart';
 
 class GetUserLocalDataSource {
-  static const String _boxName = 'user_box';
-  static const String _userKey = 'current_user';
+  static const String _boxName = AppDbConstants.userBox;
+  static const String _userKey = AppDbConstants.userKey;
 
   /// Save user locally
   Future<void> saveUser(UserModel user) async {

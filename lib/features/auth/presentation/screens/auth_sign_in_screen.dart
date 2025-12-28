@@ -13,8 +13,10 @@ import 'package:meditation_app/core/bloc/connectivity/connectivity_bloc.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
+import 'package:meditation_app/core/utils/logger_utils.dart';
 import 'package:meditation_app/core/utils/text_form_filed_validators.dart';
 import 'package:meditation_app/features/auth/presentation/bloc/email_auth/email_auth_bloc.dart';
+import 'package:meditation_app/features/auth/presentation/bloc/get_user_auth_details/get_user_auth_details_bloc.dart';
 import 'package:meditation_app/features/auth/presentation/widgets/social_btn.dart';
 
 class AuthSignInScreen extends StatefulWidget {
@@ -183,66 +185,79 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                     const SizedBox(height: 70),
 
                     // Sign In Btn
-                    BlocConsumer<EmailAuthBloc, EmailAuthState>(
-                      listener: (context, state) {
-                        if (state is EmailLoginAuthSuccess) {
-                          // Success Toast
-                          KSnackBar.success(context, "Login Successfull");
+                    MultiBlocListener(
+                      listeners: [
+                        BlocListener<EmailAuthBloc, EmailAuthState>(
+                          listener: (context, state) {
+                            if (state is EmailLoginAuthSuccess) {
+                              KSnackBar.success(context, "Login Successful");
 
-                          // Welcome Screen
-                          GoRouter.of(
-                            context,
-                          ).pushReplacementNamed(AppRouterConstants.welcome);
+                              GoRouter.of(context).pushReplacementNamed(
+                                AppRouterConstants.welcome,
+                              );
 
-                          //
+                              clearAllControllers();
+                            } else if (state is EmailLoginAuthFailure) {
+                              KSnackBar.error(context, state.message);
+                            }
+                          },
+                        ),
 
-                          // Clear All Controllers
-                          clearAllControllers();
-                        } else if (state is EmailLoginAuthFailure) {
-                          // Failure Toast
-                          KSnackBar.success(context, state.message);
-                        }
-                      },
-                      builder: (context, state) {
-                        return KFilledBtn(
-                          isLoading: state is EmailLoginAuthLoading,
-                          btnTitle: "Log In",
-                          btnBgColor: AppColors.primaryColor,
-                          btnTitleColor: AppColors.bgColor,
-                          onTap: () {
-                            if (_formKey.currentState!.validate()) {
-                              final connectivityState = context
-                                  .read<ConnectivityBloc>()
-                                  .state;
+                        BlocListener<
+                          GetUserAuthDetailsBloc,
+                          GetUserAuthDetailsState
+                        >(
+                          listener: (context, state) {
+                            if (state is GetUserAuthDetailsSuccess) {
+                              final user = state.userEntity;
 
-                              // Correct internet check
-                              if (connectivityState is ConnectivityFailure ||
-                                  (connectivityState is ConnectivitySuccess &&
-                                      connectivityState.isConnected == false)) {
-                                Future.microtask(() {
+                              LoggerUtils.logInfo("The User details $user");
+
+                              GoRouter.of(context).pushReplacementNamed(
+                                AppRouterConstants.bottomNav,
+                              );
+                            } else if (state is GetUserAuthDetailsFailure) {}
+                          },
+                        ),
+                      ],
+                      child: BlocBuilder<EmailAuthBloc, EmailAuthState>(
+                        builder: (context, emailAuthState) {
+                          return KFilledBtn(
+                            isLoading: emailAuthState is EmailLoginAuthLoading,
+                            btnTitle: "Log In",
+                            btnBgColor: AppColors.primaryColor,
+                            btnTitleColor: AppColors.bgColor,
+                            borderRadius: 30,
+                            fontSize: 16,
+                            btnHeight: 55,
+                            btnWidth: double.maxFinite,
+                            onTap: () {
+                              if (_formKey.currentState!.validate()) {
+                                final connectivityState = context
+                                    .read<ConnectivityBloc>()
+                                    .state;
+
+                                if (connectivityState is ConnectivityFailure ||
+                                    (connectivityState is ConnectivitySuccess &&
+                                        !connectivityState.isConnected)) {
                                   KSnackBar.error(
                                     context,
                                     "No Internet Connection",
                                   );
-                                });
-                                return;
-                              }
+                                  return;
+                                }
 
-                              // Login Event
-                              context.read<EmailAuthBloc>().add(
-                                LoginWithEmailEvent(
-                                  email: _emailController.text.trim(),
-                                  password: _passwordController.text.trim(),
-                                ),
-                              );
-                            }
-                          },
-                          borderRadius: 30,
-                          fontSize: 16,
-                          btnHeight: 55,
-                          btnWidth: double.maxFinite,
-                        );
-                      },
+                                context.read<EmailAuthBloc>().add(
+                                  LoginWithEmailEvent(
+                                    email: _emailController.text.trim(),
+                                    password: _passwordController.text.trim(),
+                                  ),
+                                );
+                              }
+                            },
+                          );
+                        },
+                      ),
                     ),
 
                     // Forget Password ?
