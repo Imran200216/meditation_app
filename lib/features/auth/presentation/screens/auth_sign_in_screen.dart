@@ -194,6 +194,8 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                             context,
                           ).pushReplacementNamed(AppRouterConstants.welcome);
 
+                          //
+
                           // Clear All Controllers
                           clearAllControllers();
                         } else if (state is EmailLoginAuthFailure) {

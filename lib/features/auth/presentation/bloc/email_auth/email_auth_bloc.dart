@@ -58,12 +58,13 @@ class EmailAuthBloc extends Bloc<EmailAuthEvent, EmailAuthState> {
 
         if (result.token.isNotEmpty) {
           emit(EmailLoginAuthSuccess(emailAuthLoginEntity: result));
+          LoggerUtils.logInfo("The Email Login: ${result.token}");
         } else {
           emit(EmailLoginAuthFailure(message: "Login Failure"));
         }
       } catch (e) {
         emit(EmailLoginAuthFailure(message: e.toString()));
-        LoggerUtils.logInfo("The Email Login Catch Failure: ${e.toString()}");
+        LoggerUtils.logError("The Email Login Catch Failure: ${e.toString()}");
       }
     });
   }
