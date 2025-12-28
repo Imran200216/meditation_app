@@ -1,15 +1,20 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meditation_app/common/widgets/k_filled_btn.dart';
 import 'package:meditation_app/common/widgets/k_password_text_form_field.dart';
+import 'package:meditation_app/common/widgets/k_snack_bar.dart';
 import 'package:meditation_app/common/widgets/k_text.dart';
 import 'package:meditation_app/common/widgets/k_text_form_field.dart';
+import 'package:meditation_app/core/bloc/connectivity/connectivity_bloc.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
+import 'package:meditation_app/core/utils/text_form_filed_validators.dart';
+import 'package:meditation_app/features/auth/presentation/bloc/email_auth/email_auth_bloc.dart';
 import 'package:meditation_app/features/auth/presentation/widgets/social_btn.dart';
 
 class AuthSignInScreen extends StatefulWidget {
@@ -24,11 +29,20 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  // Form Key
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  // Clear Controllers
+  void clearAllControllers() {
+    _emailController.clear();
+    _passwordController.clear();
   }
 
   @override
@@ -54,194 +68,239 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
               top: 50,
               right: 20,
               left: 20,
-              child: Column(
-                children: [
-                  // Title
-                  KText(
-                    maxLines: 2,
-                    softWrap: true,
-                    text: "Welcome Back!",
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.visible,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.titleColor,
-                  ),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    // Title
+                    KText(
+                      maxLines: 2,
+                      softWrap: true,
+                      text: "Welcome Back!",
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.visible,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.titleColor,
+                    ),
 
-                  const SizedBox(height: 40),
+                    const SizedBox(height: 40),
 
-                  // Continue with Google Btn
-                  SocialBtn(
-                    btnHeight: 55,
-                    btnTitle: "Continue into Google",
-                    borderRadius: 30,
-                    borderColor: AppColors.socialBtnBorderColor,
-                    bgColor: AppColors.bgColor,
-                    textColor: AppColors.titleColor,
-                    svgIcon: AppAssetsConstants.google,
-                    onTap: () {},
-                    btnWidth: double.maxFinite,
-                  ),
+                    // Continue with Google Btn
+                    SocialBtn(
+                      btnHeight: 55,
+                      btnTitle: "Continue into Google",
+                      borderRadius: 30,
+                      borderColor: AppColors.socialBtnBorderColor,
+                      bgColor: AppColors.bgColor,
+                      textColor: AppColors.titleColor,
+                      svgIcon: AppAssetsConstants.google,
+                      onTap: () {},
+                      btnWidth: double.maxFinite,
+                    ),
 
-                  Platform.isIOS
-                      ? const SizedBox(height: 20)
-                      : SizedBox.shrink(),
+                    Platform.isIOS
+                        ? const SizedBox(height: 20)
+                        : SizedBox.shrink(),
 
-                  // Continue with Apple Btn
-                  Platform.isIOS
-                      ? SocialBtn(
-                          btnHeight: 55,
-                          btnTitle: "Continue into Apple",
-                          borderRadius: 30,
-                          borderColor: AppColors.socialBtnBorderColor,
-                          bgColor: AppColors.bgColor,
-                          textColor: AppColors.titleColor,
-                          svgIcon: AppAssetsConstants.apple,
-                          onTap: () {},
-                          btnWidth: double.maxFinite,
+                    // Continue with Apple Btn
+                    Platform.isIOS
+                        ? SocialBtn(
+                            btnHeight: 55,
+                            btnTitle: "Continue into Apple",
+                            borderRadius: 30,
+                            borderColor: AppColors.socialBtnBorderColor,
+                            bgColor: AppColors.bgColor,
+                            textColor: AppColors.titleColor,
+                            svgIcon: AppAssetsConstants.apple,
+                            onTap: () {},
+                            btnWidth: double.maxFinite,
+                          )
+                        : SizedBox.shrink(),
+
+                    const SizedBox(height: 40),
+
+                    Row(
+                          spacing: 20,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Divider(color: AppColors.subTitleColor),
+                            ),
+
+                            // Or Log in with email
+                            KText(
+                              maxLines: 2,
+                              softWrap: true,
+                              text: "Or Log in with Email",
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.visible,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.subTitleColor,
+                            ),
+
+                            Expanded(
+                              child: Divider(color: AppColors.subTitleColor),
+                            ),
+                          ],
                         )
-                      : SizedBox.shrink(),
+                        .animate()
+                        .fadeIn(delay: 80.ms)
+                        .slideX(begin: -0.5, end: 0),
 
-                  const SizedBox(height: 40),
+                    const SizedBox(height: 20),
 
-                  Row(
-                    spacing: 20,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(child: Divider(color: AppColors.subTitleColor)),
+                    // Email Address TextForm Field
+                    KTextFormField(
+                          controller: _emailController,
+                          hintText: "Enter email address",
+                          validator: TextFormFieldValidators.validateEmail,
+                          keyboardType: TextInputType.emailAddress,
+                          autofillHints: [AutofillHints.email],
+                          suffixIcon: Icon(
+                            Icons.alternate_email_outlined,
+                            color: AppColors.subTitleColor,
+                          ),
+                        )
+                        .animate()
+                        .fadeIn(delay: 120.ms)
+                        .slideX(begin: -0.5, end: 0),
 
-                      // Or Log in with email
-                      KText(
-                        maxLines: 2,
+                    const SizedBox(height: 24),
+
+                    // Email Address TextForm Field
+                    KPasswordTextFormField(
+                          controller: _passwordController,
+                          hintText: "Enter your password",
+                          validator: TextFormFieldValidators.validatePassword,
+                        )
+                        .animate()
+                        .fadeIn(delay: 160.ms)
+                        .slideX(begin: -0.5, end: 0),
+
+                    const SizedBox(height: 70),
+
+                    // Sign In Btn
+                    BlocConsumer<EmailAuthBloc, EmailAuthState>(
+                      listener: (context, state) {
+                        if (state is EmailLoginAuthSuccess) {
+                          // Success Toast
+                          KSnackBar.success(context, "Login Successfull");
+
+                          // Welcome Screen
+                          GoRouter.of(
+                            context,
+                          ).pushReplacementNamed(AppRouterConstants.welcome);
+
+                          // Clear All Controllers
+                          clearAllControllers();
+                        } else if (state is EmailLoginAuthFailure) {
+                          // Failure Toast
+                          KSnackBar.success(context, state.message);
+                        }
+                      },
+                      builder: (context, state) {
+                        return KFilledBtn(
+                          isLoading: state is EmailLoginAuthLoading,
+                          btnTitle: "Log In",
+                          btnBgColor: AppColors.primaryColor,
+                          btnTitleColor: AppColors.bgColor,
+                          onTap: () {
+                            if (_formKey.currentState!.validate()) {
+                              final connectivityState = context
+                                  .read<ConnectivityBloc>()
+                                  .state;
+
+                              // Correct internet check
+                              if (connectivityState is ConnectivityFailure ||
+                                  (connectivityState is ConnectivitySuccess &&
+                                      connectivityState.isConnected == false)) {
+                                Future.microtask(() {
+                                  KSnackBar.error(
+                                    context,
+                                    "No Internet Connection",
+                                  );
+                                });
+                                return;
+                              }
+
+                              // Login Event
+                              context.read<EmailAuthBloc>().add(
+                                LoginWithEmailEvent(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim(),
+                                ),
+                              );
+                            }
+                          },
+                          borderRadius: 30,
+                          fontSize: 16,
+                          btnHeight: 55,
+                          btnWidth: double.maxFinite,
+                        );
+                      },
+                    ),
+
+                    // Forget Password ?
+                    TextButton(
+                      onPressed: () {},
+                      child: KText(
+                        maxLines: 1,
                         softWrap: true,
-                        text: "Or Log in with Email",
+                        text: "Forget Password?",
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.visible,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.subTitleColor,
+                        color: AppColors.titleColor,
                       ),
-
-                      Expanded(child: Divider(color: AppColors.subTitleColor)),
-                    ],
-                  ).animate().fadeIn(delay: 80.ms).slideX(begin: -0.5, end: 0),
-
-                  const SizedBox(height: 20),
-
-                  // Email Address TextForm Field
-                  KTextFormField(
-                    controller: _emailController,
-                    hintText: "Enter email address",
-                    keyboardType: TextInputType.emailAddress,
-                    autofillHints: [AutofillHints.email],
-                    suffixIcon: Icon(
-                      Icons.alternate_email_outlined,
-                      color: AppColors.subTitleColor,
                     ),
-                  ).animate().fadeIn(delay: 120.ms).slideX(begin: -0.5, end: 0),
 
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 30),
 
-                  // Email Address TextForm Field
-                  KPasswordTextFormField(
-                    controller: _passwordController,
-                    hintText: "Enter your password",
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Password is required";
-                      }
-                      if (value.length < 8) {
-                        return "Password must be at least 8 characters";
-                      }
-                      return null;
-                    },
-                  ).animate().fadeIn(delay: 160.ms).slideX(begin: -0.5, end: 0),
-                ],
-              ),
-            ).animate().fadeIn(delay: 40.ms).slideY(begin: -0.5, end: 0),
-
-            // Auth Footer
-            Positioned(
-              bottom: 30,
-              right: 20,
-              left: 20,
-              child: Column(
-                children: [
-                  // Sign In Btn
-                  KFilledBtn(
-                    btnTitle: "Log In",
-                    btnBgColor: AppColors.primaryColor,
-                    btnTitleColor: AppColors.bgColor,
-                    onTap: () {
-                      // Auth Sign Up Screen
-                      GoRouter.of(
-                        context,
-                      ).pushReplacementNamed(AppRouterConstants.welcome);
-                    },
-                    borderRadius: 30,
-                    fontSize: 16,
-                    btnHeight: 55,
-                    btnWidth: double.maxFinite,
-                  ),
-
-                  // Forget Password ?
-                  TextButton(
-                    onPressed: () {},
-                    child: KText(
-                      maxLines: 1,
-                      softWrap: true,
-                      text: "Forget Password?",
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.visible,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.titleColor,
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Don't have an account text
-                      KText(
-                        maxLines: 1,
-                        softWrap: true,
-                        text: "Don't have an account?",
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.visible,
-                        fontSize: 17,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.authFooterContent,
-                      ),
-
-                      // Sign Up Text Btn
-                      TextButton(
-                        onPressed: () {
-                          // Auth Sign Up Screen
-                          GoRouter.of(
-                            context,
-                          ).pushNamed(AppRouterConstants.authSignUp);
-                        },
-                        child: KText(
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Don't have an account text
+                        KText(
                           maxLines: 1,
                           softWrap: true,
-                          text: "Sign Up",
+                          text: "Don't have an account?",
                           textAlign: TextAlign.center,
                           overflow: TextOverflow.visible,
                           fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.authFooterContent,
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+
+                        // Sign Up Text Btn
+                        TextButton(
+                          onPressed: () {
+                            // Auth Sign Up Screen
+                            GoRouter.of(
+                              context,
+                            ).pushNamed(AppRouterConstants.authSignUp);
+                          },
+                          child: KText(
+                            maxLines: 1,
+                            softWrap: true,
+                            text: "Sign Up",
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.visible,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ).animate().fadeIn(delay: 120.ms).slideX(begin: -0.5, end: 0),
+            ).animate().fadeIn(delay: 40.ms).slideY(begin: -0.5, end: 0),
           ],
         ),
       ),

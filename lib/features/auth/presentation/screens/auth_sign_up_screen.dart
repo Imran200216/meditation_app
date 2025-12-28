@@ -44,6 +44,14 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
     super.dispose();
   }
 
+  // Clear Controllers
+  void clearAllControllers() {
+    _userNameController.clear();
+    _emailController.clear();
+    _passwordController.clear();
+    _confirmPasswordController.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -223,6 +231,9 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                             GoRouter.of(
                               context,
                             ).pushReplacementNamed(AppRouterConstants.recovery);
+
+                            // Clear All Controllers
+                            clearAllControllers();
                           } else if (state is EmailRegisterAuthFailure) {
                             // Failure toast
                             KSnackBar.error(context, state.message);
@@ -254,6 +265,7 @@ class _AuthSignUpScreenState extends State<AuthSignUpScreen> {
                                   return;
                                 }
 
+                                // Register Event
                                 context.read<EmailAuthBloc>().add(
                                   RegisterWithEmailEvent(
                                     firstName: _userNameController.text.trim(),
