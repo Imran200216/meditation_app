@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -6,6 +7,7 @@ import 'package:meditation_app/core/router/app_router.dart';
 import 'package:meditation_app/core/service/audio_service.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/di/service_locator.dart';
+import 'package:meditation_app/firebase_options.dart';
 import 'package:meditation_app/providers/app_bloc_providers.dart';
 
 // Make audioHandler globally accessible
@@ -13,6 +15,8 @@ late AudioPlayerHandler audioHandler;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Hive Initialization
   await Hive.initFlutter();

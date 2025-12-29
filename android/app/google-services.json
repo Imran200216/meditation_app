@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "170331721576",
+    "project_id": "yogaura-382bb",
+    "storage_bucket": "yogaura-382bb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170331721576:android:978f2a245318c023fb10dd",
+        "android_client_info": {
+          "package_name": "com.meditation.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "170331721576-na05k6jo8ige6m489mvivrujt97hp5s8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.meditation.app",
+            "certificate_hash": "910a481357dc404d4a7fe1e4e6c7b91cc24da4ca"
+          }
+        },
+        {
+          "client_id": "170331721576-fgukpmu1lhaj8vpstlo5ef0aj7ak0eit.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCs-AxqwFK7YplDHJdFAf9tx9hSOe5Yk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "170331721576-fgukpmu1lhaj8vpstlo5ef0aj7ak0eit.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "170331721576-sk6n98q04m0bafc8m8gtknu73ibacv6h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.meditation.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

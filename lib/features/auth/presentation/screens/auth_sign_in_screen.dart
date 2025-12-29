@@ -13,6 +13,8 @@ import 'package:meditation_app/core/bloc/connectivity/connectivity_bloc.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/constants/app_db_constants.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
+import 'package:meditation_app/core/service/apple_auth_service.dart';
+import 'package:meditation_app/core/service/google_auth_service.dart';
 import 'package:meditation_app/core/service/hive_service.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/core/utils/logger_utils.dart';
@@ -99,7 +101,14 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                       bgColor: AppColors.bgColor,
                       textColor: AppColors.titleColor,
                       svgIcon: AppAssetsConstants.google,
-                      onTap: () {},
+                      onTap: () async {
+                        final googleAuthService = GoogleAuthService();
+
+                        final googleAuthId = await googleAuthService
+                            .getGoogleAuthId();
+
+                        LoggerUtils.logInfo('Google Auth ID: $googleAuthId');
+                      },
                       btnWidth: double.maxFinite,
                     ),
 
@@ -117,7 +126,16 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                             bgColor: AppColors.bgColor,
                             textColor: AppColors.titleColor,
                             svgIcon: AppAssetsConstants.apple,
-                            onTap: () {},
+                            onTap: () async {
+                              final appleAuthService = AppleAuthService();
+
+                              final appleAuthId = await appleAuthService
+                                  .getAppleAuthId();
+
+                              LoggerUtils.logInfo(
+                                'Apple Auth ID: $appleAuthId',
+                              );
+                            },
                             btnWidth: double.maxFinite,
                           )
                         : SizedBox.shrink(),

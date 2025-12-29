@@ -10,6 +10,8 @@ class AppContentConstants {
 
   static const String imranPortFolio =
       "https://imran-flutter-portfolio.netlify.app/";
-  static const String maniKandanPortFolio = "";
-  static const String anirudhaneVPotFolio = "https://www.linkedin.com/in/anirudhan-v-344069206?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app";
+  static const String maniKandanPortFolio =
+      "https://www.linkedin.com/in/manikandan-s-42188a26a/";
+  static const String anirudhaneVPotFolio =
+      "https://www.linkedin.com/in/anirudhan-v-344069206/";
 }
