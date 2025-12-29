@@ -104,10 +104,16 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                       onTap: () async {
                         final googleAuthService = GoogleAuthService();
 
-                        final googleAuthId = await googleAuthService
-                            .getGoogleAuthId();
+                        final user = await googleAuthService.signIn();
 
-                        LoggerUtils.logInfo('Google Auth ID: $googleAuthId');
+                        if (user != null) {
+                          LoggerUtils.logInfo("ID: ${user.id}");
+                          LoggerUtils.logInfo("Name: ${user.name}");
+                          LoggerUtils.logInfo("Email: ${user.email}");
+                          LoggerUtils.logInfo(
+                            "Profile Image: ${user.profileImage}",
+                          );
+                        }
                       },
                       btnWidth: double.maxFinite,
                     ),
