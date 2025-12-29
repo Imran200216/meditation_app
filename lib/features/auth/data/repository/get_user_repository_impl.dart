@@ -15,26 +15,30 @@ class GetUserRepositoryImpl implements GetUserRepository {
 
   @override
   Future<UserEntity> getUserByIdAuth({required String userId}) async {
-    // 1️⃣ Try local first
-    final localUser = await getUserLocalDataSource.getUser();
+    try {
+      // 1️⃣ Try local first
+      final localUser = await getUserLocalDataSource.getUser();
 
-    if (localUser != null) {
-      LoggerUtils.logInfo("User fetched from local Hive storage: $localUser");
-      return localUser; // ✅ return cached user
+      if (localUser != null) {
+        LoggerUtils.logInfo("✅ User loaded from cache"); // Simplified log
+        return localUser;
+      }
+
+      LoggerUtils.logInfo("📡 Fetching user from remote...");
+
+      // 2️⃣ Fetch from remote
+      final remoteUser = await getUserRemoteDataSource.getUserBYIdAuth(
+        id: userId,
+      );
+
+      // 3️⃣ Save to local
+      await getUserLocalDataSource.saveUser(remoteUser);
+      LoggerUtils.logInfo("💾 User saved to cache");
+
+      return remoteUser;
+    } catch (e) {
+      LoggerUtils.logError("❌ Failed to get user: $e");
+      rethrow;
     }
-
-    LoggerUtils.logInfo("No user in local storage, fetching from remote...");
-
-    // 2️⃣ Fetch from remote
-    final remoteUser = await getUserRemoteDataSource.getUserBYIdAuth(
-      id: userId,
-    );
-
-    // 3️⃣ Save to local
-    await getUserLocalDataSource.saveUser(remoteUser);
-    LoggerUtils.logInfo("User saved to local Hive storage: $remoteUser");
-
-    // 4️⃣ Return user
-    return remoteUser;
   }
 }

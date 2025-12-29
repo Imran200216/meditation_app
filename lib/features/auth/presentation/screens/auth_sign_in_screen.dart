@@ -227,38 +227,38 @@ class _AuthSignInScreenState extends State<AuthSignInScreen> {
                           GetUserAuthDetailsBloc,
                           GetUserAuthDetailsState
                         >(
+                          listenWhen: (previous, current) =>
+                              previous.runtimeType != current.runtimeType,
                           listener: (context, state) async {
                             if (state is GetUserAuthDetailsSuccess) {
                               final user = state.userEntity;
 
-                              LoggerUtils.logInfo("The User details $user");
-
-                              // Bottom Nav
-                              GoRouter.of(context).pushReplacementNamed(
-                                AppRouterConstants.bottomNav,
-                              );
-
-                              // Save isAuth Status in Hive
-                              HiveService.saveData(
+                              // Save to Hive
+                              await HiveService.saveData(
                                 boxName: AppDbConstants.userBox,
                                 key: AppDbConstants.userAuthLoggedStatus,
                                 value: true,
                               );
 
-                              // Read the value from Hive
-                              final isLogged = await HiveService.getData(
-                                boxName: AppDbConstants.userBox,
-                                key: AppDbConstants.userAuthLoggedStatus,
-                              );
-
-                              LoggerUtils.logInfo(
-                                "Hive Logged Status: $isLogged",
-                              );
-
                               // Clear Controllers
                               clearAllControllers();
 
-                              KSnackBar.success(context, "Login Successful");
+                              // Navigate
+                              if (context.mounted) {
+                                GoRouter.of(context).pushReplacementNamed(
+                                  AppRouterConstants.bottomNav,
+                                );
+
+                                // Show snackbar with a slight delay after navigation
+                                Future.delayed(Duration(milliseconds: 300), () {
+                                  if (context.mounted) {
+                                    KSnackBar.success(
+                                      context,
+                                      "Login Successful",
+                                    );
+                                  }
+                                });
+                              }
                             } else if (state is GetUserAuthDetailsFailure) {
                               LoggerUtils.logError(
                                 "The Get User Auth Details Failure: ${state.message.toString()}",
