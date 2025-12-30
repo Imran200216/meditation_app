@@ -1,12 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meditation_app/common/widgets/k_filled_btn.dart';
 import 'package:meditation_app/common/widgets/k_text.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
+import 'package:meditation_app/core/service/apple_auth_service.dart';
+import 'package:meditation_app/core/service/google_auth_service.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
+import 'package:meditation_app/core/utils/logger_utils.dart';
+import 'package:meditation_app/features/auth/presentation/widgets/social_btn.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -82,68 +86,62 @@ class _IntroScreenState extends State<IntroScreen> {
 
                   const SizedBox(height: 30),
 
-                  // Sign Up Btn
-                  KFilledBtn(
-                        btnTitle: "Sign Up",
-                        btnBgColor: AppColors.primaryColor,
-                        btnTitleColor: AppColors.bgColor,
-                        onTap: () {
-                          // Auth Sign Up Screen
-                          GoRouter.of(
-                            context,
-                          ).pushReplacementNamed(AppRouterConstants.authSignUp);
-                        },
-                        borderRadius: 30,
-                        fontSize: 16,
-                        btnHeight: 55,
-                        btnWidth: double.maxFinite,
-                      )
-                      .animate()
-                      .fadeIn(delay: 120.ms)
-                      .slideX(begin: -0.5, end: 0, curve: Curves.easeIn),
+                  // Continue with Google Btn
+                  SocialBtn(
+                    btnHeight: 55,
+                    btnTitle: "Continue into Google",
+                    borderRadius: 30,
+                    borderColor: AppColors.socialBtnBorderColor,
+                    bgColor: AppColors.bgColor,
+                    textColor: AppColors.titleColor,
+                    svgIcon: AppAssetsConstants.google,
+                    onTap: () async {
+                      final googleAuthService = GoogleAuthService();
 
-                  const SizedBox(height: 30),
+                      final user = await googleAuthService.signIn();
 
-                  Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Already have an account text
-                          KText(
-                            maxLines: 1,
-                            softWrap: true,
-                            text: "Already have an account?",
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.visible,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.authFooterContent,
-                          ),
+                      if (user != null) {
+                        LoggerUtils.logInfo("ID: ${user.id}");
+                        LoggerUtils.logInfo("Name: ${user.name}");
+                        LoggerUtils.logInfo("Email: ${user.email}");
+                        LoggerUtils.logInfo(
+                          "Profile Image: ${user.profileImage}",
+                        );
 
-                          // Log In Text Btn
-                          TextButton(
-                            onPressed: () {
-                              // Auth Sign In Screen
-                              GoRouter.of(context).pushReplacementNamed(
-                                AppRouterConstants.authSignIn,
-                              );
-                            },
-                            child: KText(
-                              maxLines: 1,
-                              softWrap: true,
-                              text: "Log In",
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.visible,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ],
-                      )
-                      .animate()
-                      .fadeIn(delay: 160.ms)
-                      .slideX(begin: -0.5, end: 0, curve: Curves.easeIn),
+                        // Recovery Screen
+                        GoRouter.of(
+                          context,
+                        ).pushReplacementNamed(AppRouterConstants.recovery);
+                      }
+                    },
+                    btnWidth: double.maxFinite,
+                  ),
+
+                  Platform.isIOS
+                      ? const SizedBox(height: 20)
+                      : SizedBox.shrink(),
+
+                  // Continue with Apple Btn
+                  Platform.isIOS
+                      ? SocialBtn(
+                          btnHeight: 55,
+                          btnTitle: "Continue into Apple",
+                          borderRadius: 30,
+                          borderColor: AppColors.socialBtnBorderColor,
+                          bgColor: AppColors.bgColor,
+                          textColor: AppColors.titleColor,
+                          svgIcon: AppAssetsConstants.apple,
+                          onTap: () async {
+                            final appleAuthService = AppleAuthService();
+
+                            final appleAuthId = await appleAuthService
+                                .getAppleAuthId();
+
+                            LoggerUtils.logInfo('Apple Auth ID: $appleAuthId');
+                          },
+                          btnWidth: double.maxFinite,
+                        )
+                      : SizedBox.shrink(),
                 ],
               ),
             ),
