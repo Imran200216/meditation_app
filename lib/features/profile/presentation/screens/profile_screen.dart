@@ -8,11 +8,12 @@ import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/core/utils/logger_utils.dart';
 import 'package:meditation_app/core/utils/url_launcher_utils.dart';
-import 'package:meditation_app/features/auth/data/datasource/get_user_local_data_source.dart';
-import 'package:meditation_app/features/auth/presentation/bloc/get_user_auth_details/get_user_auth_details_bloc.dart';
+import 'package:meditation_app/features/intro/data/data_source/local/get_user_local_data_source.dart';
+import 'package:meditation_app/features/intro/presentation/bloc/get_user_auth_details/get_user_auth_details_bloc.dart';
 import 'package:meditation_app/features/profile/presentation/widgets/profile_list_tile.dart';
 import 'package:meditation_app/features/profile/presentation/widgets/profile_username_email_avatar_content.dart';
 import 'package:meditation_app/features/profile/presentation/widgets/profile_username_email_avatar_content_skeleton.dart';
+import 'package:meditation_app/providers/app_bloc_provider_extension.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -45,7 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final userId = user.id;
 
       // Get User Auth Details
-      context.read<GetUserAuthDetailsBloc>().add(
+      context.readGetUserAuthDetailsBloc.add(
         GetUserByIdAuthEvent(userId: userId),
       );
     } catch (e) {

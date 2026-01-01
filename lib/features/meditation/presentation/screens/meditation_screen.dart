@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:meditation_app/common/widgets/k_text.dart';
 import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
+import 'package:meditation_app/core/utils/logger_utils.dart';
+import 'package:meditation_app/features/intro/data/data_source/local/get_user_local_data_source.dart';
+import 'package:meditation_app/features/meditation/presentation/bloc/meditation_audio_category/meditation_audio_category_bloc.dart';
+import 'package:meditation_app/features/meditation/presentation/bloc/meditation_audio_list/meditation_audio_list_bloc.dart';
+import 'package:meditation_app/features/meditation/presentation/widgets/choice_chip_skeleton.dart';
 import 'package:meditation_app/features/meditation/presentation/widgets/meditate_audio_card.dart';
+import 'package:meditation_app/features/meditation/presentation/widgets/meditation_audio_card_skeleton.dart';
+import 'package:meditation_app/providers/app_bloc_provider_extension.dart';
 
 class MeditationScreen extends StatefulWidget {
   const MeditationScreen({super.key});
@@ -16,16 +24,70 @@ class MeditationScreen extends StatefulWidget {
 }
 
 class _MeditationScreenState extends State<MeditationScreen> {
-  final List<String> options = [
-    "All",
-    "Anxious",
-    "Sleep",
-    "Kids",
-    "Nature",
-    "Dark",
-  ];
+  // Select Option Flag
+  String selectedOption = "Meditation";
 
-  String selectedOption = "All";
+  @override
+  void initState() {
+    _meditationApiCalls();
+    super.initState();
+  }
+
+  Future<void> _meditationApiCalls() async {
+    await Future.wait([
+      // Meditation Audio Category
+      _getMeditationAudioCategory(),
+
+      // Meditation Audio List
+      _getMeditationAudioList(categoryName: "Meditation"),
+    ]);
+  }
+
+  // Get Mediation Audio Category
+  Future<void> _getMeditationAudioCategory() async {
+    try {
+      final localDataSource = GetUserLocalDataSource();
+
+      final user = await localDataSource.getUser();
+
+      if (user == null) {
+        LoggerUtils.logError("No user found in Hive");
+        return;
+      }
+
+      final userId = user.id;
+
+      // Get Meditation Audio Category Bloc
+      context.readMeditationAudioCategoryBloc.add(
+        GetMeditationAudioCategoryEvent(userId: userId),
+      );
+    } catch (e) {
+      LoggerUtils.logError("Error reading user from Hive: $e");
+    }
+  }
+
+  // Get Meditation Audio List
+  Future<void> _getMeditationAudioList({required String categoryName}) async {
+    try {
+      final localDataSource = GetUserLocalDataSource();
+
+      final user = await localDataSource.getUser();
+
+      if (user == null) {
+        LoggerUtils.logError("No user found in Hive");
+        return;
+      }
+
+      final userId = user.id;
+
+      // Get Meditation Audio Category Bloc
+      context.readMeditationAudioListBloc.add(
+        GetMeditationAudioList(userId: userId, categoryName: categoryName),
+      );
+    } catch (e) {
+      LoggerUtils.logError("Error reading user from Hive: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,77 +127,168 @@ class _MeditationScreenState extends State<MeditationScreen> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: options.map((option) {
-                    final isSelected = selectedOption == option;
+              child:
+                  BlocBuilder<
+                    MeditationAudioCategoryBloc,
+                    MeditationAudioCategoryState
+                  >(
+                    builder: (context, state) {
+                      if (state is MeditationAudioCategoryLoading) {
+                        return Row(
+                          children: List.generate(
+                            4,
+                            (index) => const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4),
+                              child: ChoiceChipSkeleton(),
+                            ),
+                          ),
+                        );
+                      }
 
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child:
-                          ChoiceChip(
-                                showCheckmark: false,
-                                label: Text(
-                                  option,
-                                  style: TextStyle(
-                                    color: isSelected
-                                        ? Colors.white
-                                        : AppColors.titleColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                      if (state is MeditationAudioCategorySuccess) {
+                        final categories =
+                            state.meditationAudioCategory.categories;
+
+                        LoggerUtils.logInfo(
+                          'Categories count: ${categories.length}',
+                        );
+
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: categories.map((category) {
+                              final isSelected = selectedOption == category;
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
                                 ),
-                                selected: isSelected,
-                                selectedColor: AppColors.primaryColor,
-                                backgroundColor: AppColors.bgColor,
-                                shape: StadiumBorder(
-                                  side: BorderSide(
-                                    color: AppColors.subTitleColor.withOpacity(
-                                      0.3,
-                                    ),
-                                  ),
-                                ),
-                                onSelected: (_) {
-                                  setState(() => selectedOption = option);
-                                },
-                              )
-                              .animate(target: isSelected ? 1 : 0)
-                              .scale(
-                                begin: const Offset(1, 1),
-                                end: const Offset(1.1, 1.1),
-                                duration: 200.ms,
-                              ),
-                    );
-                  }).toList(),
-                ),
-              ),
+                                child:
+                                    ChoiceChip(
+                                          showCheckmark: false,
+                                          label: Text(
+                                            category,
+                                            style: TextStyle(
+                                              fontFamily: "GoogleSans",
+                                              color: isSelected
+                                                  ? Colors.white
+                                                  : AppColors.titleColor,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          selected: isSelected,
+                                          selectedColor: AppColors.primaryColor,
+                                          backgroundColor: AppColors.bgColor,
+                                          shape: StadiumBorder(
+                                            side: BorderSide(
+                                              color: AppColors.subTitleColor
+                                                  .withOpacity(0.3),
+                                            ),
+                                          ),
+                                          onSelected: (_) {
+                                            setState(
+                                              () => selectedOption = category,
+                                            );
+                                          },
+                                        )
+                                        .animate(target: isSelected ? 1 : 0)
+                                        .scale(
+                                          begin: const Offset(1, 1),
+                                          end: const Offset(1.1, 1.1),
+                                          duration: 200.ms,
+                                        ),
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      }
+
+                      if (state is MeditationAudioCategoryFailure) {
+                        LoggerUtils.logError(state.message);
+                        return SizedBox.shrink();
+                      }
+
+                      return SizedBox.shrink();
+                    },
+                  ),
             ),
           ),
 
           /// 🎵 AUDIO GRID
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            sliver: SliverGrid(
-              delegate: SliverChildBuilderDelegate((context, index) {
-                return MeditateAudioCard(
-                      audioTitle: "Relaxation Music with Candle Love Move",
-                      onTap: () {
-                        GoRouter.of(
-                          context,
-                        ).pushNamed(AppRouterConstants.audio);
-                      },
-                    )
-                    .animate()
-                    .fadeIn(delay: (index * 80).ms)
-                    .slideY(begin: 0.3, end: 0);
-              }, childCount: 20),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: itemWidth / itemHeight,
-              ),
-            ),
+            sliver:
+                BlocBuilder<MeditationAudioListBloc, MeditationAudioListState>(
+                  builder: (context, state) {
+                    if (state is GetMeditationAudioListLoading) {
+                      return SliverGrid(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) => const MeditateAudioCardSkeleton(),
+                          childCount: 6,
+                        ),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: itemWidth / itemHeight,
+                        ),
+                      );
+                    }
+
+                    if (state is GetMeditationAudioListSuccess) {
+                      final audios = state.audios;
+
+                      if (audios.audios.isEmpty) {
+                        return SliverToBoxAdapter(
+                          child: Center(
+                            child: Text(
+                              "No audios found",
+                              style: TextStyle(color: AppColors.subTitleColor),
+                            ),
+                          ),
+                        );
+                      }
+
+                      return SliverGrid(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          final audio = audios.audios[index];
+
+                          return MeditateAudioCard(
+                                audioTitle: audio.description,
+                                onTap: () {
+                                  GoRouter.of(context).pushNamed(
+                                    AppRouterConstants.audio,
+                                    extra: audio,
+                                  );
+                                },
+                              )
+                              .animate()
+                              .fadeIn(delay: (index * 80).ms)
+                              .slideY(begin: 0.3, end: 0);
+                        }, childCount: audios.audios.length),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: itemWidth / itemHeight,
+                        ),
+                      );
+                    }
+
+                    if (state is GetMeditationAudioListFailure) {
+                      return SliverToBoxAdapter(
+                        child: Center(
+                          child: Text(
+                            "Failed to load audios",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      );
+                    }
+
+                    return SliverToBoxAdapter(child: SizedBox.shrink());
+                  },
+                ),
           ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 30)),

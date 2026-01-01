@@ -2,14 +2,9 @@ import 'package:go_router/go_router.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/features/about_us/presentation/screens/about_us_screen.dart';
 import 'package:meditation_app/features/audio/presentation/screens/audio_screen.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_forget_password_screen.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_forget_password_success_screen.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_sign_in_screen.dart';
-import 'package:meditation_app/features/auth/presentation/screens/auth_sign_up_screen.dart';
 import 'package:meditation_app/features/bottom_nav/presentation/screens/bottom_nav.dart';
 import 'package:meditation_app/features/faq/presentation/screens/faq_screen.dart';
 import 'package:meditation_app/features/intro/presentation/screens/intro_screen.dart';
-import 'package:meditation_app/features/language/presentation/screens/language_select_screen.dart';
 import 'package:meditation_app/features/personal_info/presentation/screens/personal_info_screen.dart';
 import 'package:meditation_app/features/recovery/presentation/screens/recovery_screen.dart';
 import 'package:meditation_app/features/reminders/presentation/screens/reminders_screen.dart';
@@ -40,42 +35,6 @@ GoRouter appRouter = GoRouter(
       },
     ),
 
-    // Auth SignUp Screen
-    GoRoute(
-      path: '/authSignUp',
-      name: AppRouterConstants.authSignUp,
-      builder: (context, state) {
-        return AuthSignUpScreen();
-      },
-    ),
-
-    // Auth Sign In Screen
-    GoRoute(
-      path: '/authSignIn',
-      name: AppRouterConstants.authSignIn,
-      builder: (context, state) {
-        return AuthSignInScreen();
-      },
-    ),
-
-    // Auth Forget Password Screen
-    GoRoute(
-      path: '/authForgetPassword',
-      name: AppRouterConstants.authForgetPassword,
-      builder: (context, state) {
-        return AuthForgetPasswordScreen();
-      },
-    ),
-
-    // Auth Forget Password Success Screen
-    GoRoute(
-      path: '/authForgetPasswordSuccess',
-      name: AppRouterConstants.authForgetPasswordSuccess,
-      builder: (context, state) {
-        return AuthForgetPasswordSuccessScreen();
-      },
-    ),
-
     // Welcome screen
     GoRoute(
       path: '/welcome',
@@ -103,14 +62,7 @@ GoRouter appRouter = GoRouter(
       },
     ),
 
-    // Language Select Screen
-    GoRoute(
-      path: '/languageSelect',
-      name: AppRouterConstants.languageSelect,
-      builder: (context, state) {
-        return LanguageSelectScreen();
-      },
-    ),
+
 
     // Bottom Nav
     GoRoute(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
@@ -9,10 +10,57 @@ import 'package:meditation_app/core/constants/app_assets_constants.dart';
 import 'package:meditation_app/core/constants/app_router_constants.dart';
 import 'package:meditation_app/core/themes/app_colors.dart';
 import 'package:meditation_app/core/utils/greeting_utils.dart';
+import 'package:meditation_app/core/utils/logger_utils.dart';
+import 'package:meditation_app/features/home/presentation/widgets/home_user_name_content.dart';
+import 'package:meditation_app/features/intro/data/data_source/local/get_user_local_data_source.dart';
+import 'package:meditation_app/features/intro/presentation/bloc/get_user_auth_details/get_user_auth_details_bloc.dart';
 import 'package:meditation_app/features/meditation/presentation/widgets/meditate_audio_card.dart';
+import 'package:meditation_app/providers/app_bloc_provider_extension.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    // Home Api Calls
+    _homeApiCalls();
+    super.initState();
+  }
+
+  Future<void> _homeApiCalls() async {
+    await Future.wait([
+      // Profile
+      _getUserProfile(),
+    ]);
+  }
+
+  // Get User Profile Function
+  Future<void> _getUserProfile() async {
+    try {
+      final localDataSource = GetUserLocalDataSource();
+
+      final user = await localDataSource.getUser();
+
+      if (user == null) {
+        LoggerUtils.logError("No user found in Hive");
+        return;
+      }
+
+      final userId = user.id;
+
+      // Get User Auth Details
+      context.readGetUserAuthDetailsBloc.add(
+        GetUserByIdAuthEvent(userId: userId),
+      );
+    } catch (e) {
+      LoggerUtils.logError("Error reading user from Hive: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,14 +106,27 @@ class HomeScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            KText(
-                              maxLines: 2,
-                              softWrap: true,
-                              text:
-                                  "${GreetingUtils.getGreetingText()}, Imran B",
-                              fontSize: 24,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.titleColor,
+                            BlocBuilder<
+                              GetUserAuthDetailsBloc,
+                              GetUserAuthDetailsState
+                            >(
+                              builder: (context, state) {
+                                if (state is GetUserAuthDetailsLoading) {
+                                  return HomeUserNameContent(
+                                    userName: "NO UserName",
+                                  );
+                                } else if (state is GetUserAuthDetailsSuccess) {
+                                  return HomeUserNameContent(
+                                    userName: state.userEntity.firstName,
+                                  );
+                                } else if (state is GetUserAuthDetailsFailure) {
+                                  return HomeUserNameContent(
+                                    userName: "NO UserName",
+                                  );
+                                }
+
+                                return SizedBox.shrink();
+                              },
                             ),
                             const SizedBox(height: 6),
                             KText(
